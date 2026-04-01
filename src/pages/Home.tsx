@@ -1,6 +1,7 @@
 import Navbar from "../components/Navbar/Navbar";
 import SponsorsCarousel from "../components/SponsorsCarousel/SponsorsCarousel";
 import CTACard from "../components/CTACard/CTACard";
+import Footer from "../components/Footer/Footer";
 
 function Home() {
   return (
@@ -52,6 +53,7 @@ function Home() {
       </section>
 
       <SponsorsCarousel />
+      <Footer />
     </>
   );
 }

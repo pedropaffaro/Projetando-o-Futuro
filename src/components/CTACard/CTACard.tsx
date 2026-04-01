@@ -25,7 +25,7 @@ function CTACard({ icon, altText, description, textButton, to }: CTACardProps) {
 
       <Link
         to={to}
-        className="text-green-primary border-2 border-green-primary font-bold px-6 py-3 rounded-sm text-lg hover:bg-green-50 transition-colors"
+        className="text-green-primary border-2 border-green-primary font-bold px-6 py-3 rounded-sm text-lg hover:text-white hover:bg-green-primary transition-colors"
       >
         {textButton}
       </Link>
