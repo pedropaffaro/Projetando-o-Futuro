@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+@theme {
+  /* Global Colors */
+  --color-green-primary: #0b893f;
+  --color-green-secondary: #88ac35;
+  --color-purple-primary: #6235d1;
+
+  @keyframes scrolling {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(calc(-100%));
+    }
+  }
+
+  /* 2. Registre a animação vinculando ao nome dos keyframes acima */
+  --animate-scroll: scrolling 30s linear infinite;
+}
