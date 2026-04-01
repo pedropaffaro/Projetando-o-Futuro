@@ -20,40 +20,42 @@ function SponsorsCarousel() {
   ];
 
   return (
-    <section className="py-12 overflow-hidden w-full">
-      <div className="container mx-auto px-6 mb-8 text-center">
-        <h2 className="text-3xl font-bold text-gray-800">Nossos Parceiros</h2>
+    <section className="bg-white py-16 overflow-hidden w-full border-b-[3px] border-black">
+      <div className="container mx-auto px-6 mb-12">
+        <h2 className="text-5xl md:text-7xl font-extrabold uppercase tracking-tighter text-black">
+          Nossos Parceiros
+        </h2>
       </div>
 
-      <div className="flex w-full overflow-hidden group">
-        <div className="flex w-max animate-scroll items-center space-x-12 pr-12 group-hover:[animation-play-state:paused]">
+      <div className="flex w-full overflow-hidden group pb-4">
+        <div className="flex w-max animate-scroll items-center gap-8 pr-8 group-hover:[animation-play-state:paused]">
           {safeSponsors.map((sponsor, index) => (
             <div
               key={`l1-${sponsor.id}-${index}`}
-              className="flex-none flex items-center justify-center h-30 w-55 p-4 bg-white rounded-lg shadow-sm border border-gray-100 cursor-pointer"
+              className="flex-none flex items-center justify-center h-[120px] w-[220px] p-6 bg-white border-[3px] border-black cursor-pointer hover:-translate-y-2 transition-transform duration-200"
             >
               <img
                 src={sponsor.logoUrl}
                 alt={sponsor.name}
-                className="max-h-full max-w-full object-contain"
+                className="max-h-full max-w-full object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
               />
             </div>
           ))}
         </div>
 
         <div
-          className="flex w-max animate-scroll items-center space-x-12 pr-12 group-hover:[animation-play-state:paused]"
+          className="flex w-max animate-scroll items-center gap-8 pr-8 group-hover:[animation-play-state:paused]"
           aria-hidden="true"
         >
           {safeSponsors.map((sponsor, index) => (
             <div
               key={`l2-${sponsor.id}-${index}`}
-              className="flex-none flex items-center justify-center h-30 w-55 p-4 bg-white rounded-lg shadow-sm border border-gray-100 cursor-pointer"
+              className="flex-none flex items-center justify-center h-[120px] w-[220px] p-6 bg-white border-[3px] border-black cursor-pointer hover:-translate-y-2 transition-transform duration-200"
             >
               <img
                 src={sponsor.logoUrl}
                 alt={sponsor.name}
-                className="max-h-full max-w-full object-contain"
+                className="max-h-full max-w-full object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
               />
             </div>
           ))}

@@ -2,10 +2,13 @@ import logo from "../../assets/projetando-logo-novo-horizontal.png.avif";
 import { Link } from "react-router-dom";
 
 function Navbar() {
-  const isAuthenticated = true; // Simulação
+  const isAuthenticated = false; // Simulação
+
+  const linkClass =
+    "text-black font-bold uppercase tracking-wide hover:underline underline-offset-4 decoration-[2px] transition-all";
 
   return (
-    <nav className="bg-white shadow-md w-full px-6 py-4 flex justify-between items-center">
+    <nav className="bg-white border-b-[3px] border-black w-full px-6 py-5 flex justify-between items-center sticky top-0 z-50">
       <Link
         to="/"
         className="flex items-center"
@@ -18,27 +21,24 @@ function Navbar() {
         />
       </Link>
 
-      <ul className="hidden md:flex items-center gap-8 font-medium text-gray-700">
+      <ul className="hidden md:flex items-center gap-8">
         <li>
-          <Link to="/" className="hover:text-green-primary transition">
+          <Link to="/" className={linkClass}>
             Sobre
           </Link>
         </li>
         <li>
-          <Link to="/projetos" className="hover:text-green-primary transition">
+          <Link to="/projetos" className={linkClass}>
             Projetos
           </Link>
         </li>
         <li>
-          <Link
-            to="/como-ajudar"
-            className="hover:text-green-primary transition"
-          >
+          <Link to="/como-ajudar" className={linkClass}>
             Como Ajudar
           </Link>
         </li>
         <li>
-          <Link to="/parceiros" className="hover:text-green-primary transition">
+          <Link to="/parceiros" className={linkClass}>
             Parceiros
           </Link>
         </li>
@@ -46,12 +46,12 @@ function Navbar() {
         {isAuthenticated ? (
           <>
             <li>
-              <Link to="/admin" className="hover:text-green-primary transition">
+              <Link to="/admin" className={linkClass}>
                 Dashboard
               </Link>
             </li>
             <li>
-              <button className="bg-purple-primary text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">
+              <button className="uppercase font-extrabold text-green-primary border-[3px] border-green-primary px-6 py-2 hover:bg-green-primary hover:text-white transition-colors tracking-wide ml-2 cursor-pointer">
                 Sair
               </button>
             </li>
@@ -60,7 +60,7 @@ function Navbar() {
           <li>
             <Link
               to="/login"
-              className="bg-green-primary text-white px-5 py-2 rounded-sm hover:bg-(--color-green-secondary) transition shadow-sm"
+              className="uppercase font-extrabold text-green-primary border-[3px] border-green-primary px-6 py-2 hover:bg-green-primary hover:text-white transition-colors tracking-wide ml-2"
             >
               Área Restrita
             </Link>
@@ -68,7 +68,7 @@ function Navbar() {
         )}
       </ul>
 
-      <div className="md:hidden text-2xl">☰</div>
+      <div className="md:hidden text-3xl font-extrabold cursor-pointer">☰</div>
     </nav>
   );
 }

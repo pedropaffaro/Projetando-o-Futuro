@@ -55,17 +55,26 @@ function Footer() {
 
               <ul className="flex flex-col gap-4 font-medium text-xl">
                 <li>
-                  <a href="#" className="hover:underline underline-offset-4">
+                  <a
+                    href="https://www.instagram.com/projetandoofuturo.ong/"
+                    className="hover:underline underline-offset-4"
+                  >
                     Instagram
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:underline underline-offset-4">
+                  <a
+                    href="https://www.facebook.com/projetandoofuturoong"
+                    className="hover:underline underline-offset-4"
+                  >
                     Facebook
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:underline underline-offset-4">
+                  <a
+                    href="https://www.youtube.com/@projetandoofuturoong"
+                    className="hover:underline underline-offset-4"
+                  >
                     Youtube
                   </a>
                 </li>

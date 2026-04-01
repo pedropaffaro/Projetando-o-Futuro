@@ -10,8 +10,8 @@ interface CTACardProps {
 
 function CTACard({ icon, altText, description, textButton, to }: CTACardProps) {
   return (
-    <div className="bg-white rounded-2xl shadow-xl p-10 flex flex-col items-center text-center h-full">
-      <div className="mb-8 flex items-center justify-center h-20 w-full">
+    <div className="bg-white border-[3px] border-black p-8 md:p-10 flex flex-col items-start h-full hover:-translate-y-2 transition-transform duration-200">
+      <div className="mb-8 h-20 w-auto">
         <img
           src={icon}
           alt={altText}
@@ -19,13 +19,13 @@ function CTACard({ icon, altText, description, textButton, to }: CTACardProps) {
         />
       </div>
 
-      <p className="text-gray-700 text-lg leading-snug mb-10 flex-grow font-medium">
+      <p className="text-black text-xl md:text-2xl leading-snug mb-12 flex-grow font-bold">
         {description}
       </p>
 
       <Link
         to={to}
-        className="text-green-primary border-2 border-green-primary font-bold px-6 py-3 rounded-sm text-lg hover:text-white hover:bg-green-primary transition-colors"
+        className="w-full text-center uppercase font-extrabold text-green-primary border-[3px] border-green-primary px-6 py-4 hover:bg-green-primary hover:text-white transition-colors text-lg tracking-wide"
       >
         {textButton}
       </Link>
