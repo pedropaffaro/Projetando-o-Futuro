@@ -20,7 +20,7 @@ function SponsorsCarousel() {
   ];
 
   return (
-    <section className="bg-white py-16 overflow-hidden w-full border-b-[3px] border-black">
+    <section className="bg-white py-18 overflow-hidden w-full border-b-[3px] border-black">
       <div className="container mx-auto px-6 mb-12">
         <h2 className="text-5xl md:text-7xl font-extrabold uppercase tracking-tighter text-black">
           Nossos Parceiros
@@ -32,12 +32,12 @@ function SponsorsCarousel() {
           {safeSponsors.map((sponsor, index) => (
             <div
               key={`l1-${sponsor.id}-${index}`}
-              className="flex-none flex items-center justify-center h-[120px] w-[220px] p-6 bg-white border-[3px] border-black cursor-pointer hover:-translate-y-2 transition-transform duration-200"
+              className="flex-none flex items-center justify-center h-[275px] w-[275px] p-6 bg-white border-[3px] border-black cursor-pointer hover:-translate-y-2 transition-transform duration-200"
             >
               <img
                 src={sponsor.logoUrl}
                 alt={sponsor.name}
-                className="max-h-full max-w-full object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
+                className="max-h-full max-w-full object-contain transition-all duration-300"
               />
             </div>
           ))}
@@ -50,12 +50,12 @@ function SponsorsCarousel() {
           {safeSponsors.map((sponsor, index) => (
             <div
               key={`l2-${sponsor.id}-${index}`}
-              className="flex-none flex items-center justify-center h-[120px] w-[220px] p-6 bg-white border-[3px] border-black cursor-pointer hover:-translate-y-2 transition-transform duration-200"
+              className="flex-none flex items-center justify-center h-[275px] w-[275px] p-6 bg-white border-[3px] border-black cursor-pointer hover:-translate-y-2 transition-transform duration-200"
             >
               <img
                 src={sponsor.logoUrl}
                 alt={sponsor.name}
-                className="max-h-full max-w-full object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
+                className="max-h-full max-w-full object-contain transition-all duration-300"
               />
             </div>
           ))}
