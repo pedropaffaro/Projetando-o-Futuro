@@ -58,14 +58,11 @@ function Navbar() {
           </>
         ) : (
           <li>
-            <div className="uppercase font-extrabold text-green-primary border-[3px] border-green-primary px-6 py-2 hover:bg-green-primary hover:text-white transition-colors tracking-wide ml-2">
-              <Link
-                to="/login"
-              >
-                
-              </Link>
-              Área Restrita
-            </div>
+            <Link to="/login">
+              <div className="uppercase font-extrabold text-green-primary border-[3px] border-green-primary px-6 py-2 hover:bg-green-primary hover:text-white transition-colors tracking-wide ml-2">
+                Área Restrita
+              </div>
+            </Link>
           </li>
         )}
       </ul>
