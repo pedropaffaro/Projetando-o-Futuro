@@ -2,7 +2,7 @@ import logo from "../../assets/projetando-logo-novo-horizontal.png.avif";
 import { Link } from "react-router-dom";
 
 function Navbar() {
-  const isAuthenticated = false; // Simulação
+  const isAuthenticated = true; // Simulação
 
   const linkClass =
     "text-black font-bold uppercase tracking-wide hover:underline underline-offset-4 decoration-[2px] transition-all";
@@ -46,7 +46,7 @@ function Navbar() {
         {isAuthenticated ? (
           <>
             <li>
-              <Link to="/admin" className={linkClass}>
+              <Link to="/dashboard" className={linkClass}>
                 Dashboard
               </Link>
             </li>

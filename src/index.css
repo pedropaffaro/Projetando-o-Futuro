@@ -5,6 +5,9 @@
   --color-green-primary: #0b893f;
   --color-green-secondary: #88ac35;
   --color-purple-primary: #6235d1;
+  --color-purple-secondary: #9b7aed;
+  --color-orange-primary: #f4733e;
+  --color-orange-secondary: #ff9d76;
 
   @keyframes scrolling {
     from {
