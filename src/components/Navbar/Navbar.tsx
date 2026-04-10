@@ -1,11 +1,24 @@
 import logo from "../../assets/projetando-logo-novo-horizontal.png.avif";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 function Navbar() {
   const isAuthenticated = true; // Simulação
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const linkClass =
-    "text-black font-bold uppercase tracking-wide hover:underline underline-offset-4 decoration-[2px] transition-all";
+    "text-black font-bold uppercase tracking-wide hover:underline underline-offset-4 decoration-[2px] transition-all cursor-pointer";
+
+  const handleNavClick = (sectionId: string) => {
+    if (location.pathname === "/") {
+      document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
+    } else {
+      navigate("/");
+      setTimeout(() => {
+        document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    }
+  };
 
   return (
     <nav className="bg-white border-b-[3px] border-black w-full px-6 py-5 flex justify-between items-center sticky top-0 z-50">
@@ -23,24 +36,16 @@ function Navbar() {
 
       <ul className="hidden md:flex items-center gap-8">
         <li>
-          <Link to="/" className={linkClass}>
-            Sobre
-          </Link>
+          <span onClick={() => handleNavClick("sobre")} className={linkClass}>Sobre</span>
         </li>
         <li>
-          <Link to="/projetos" className={linkClass}>
-            Projetos
-          </Link>
+          <span onClick={() => handleNavClick("projetos")} className={linkClass}>Projetos</span>
         </li>
         <li>
-          <Link to="/como-ajudar" className={linkClass}>
-            Como Ajudar
-          </Link>
+          <span onClick={() => handleNavClick("como-ajudar")} className={linkClass}>Como Ajudar</span>
         </li>
         <li>
-          <Link to="/parceiros" className={linkClass}>
-            Parceiros
-          </Link>
+          <span onClick={() => handleNavClick("parceiros")} className={linkClass}>Parceiros</span>
         </li>
 
         {isAuthenticated ? (
