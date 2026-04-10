@@ -3,7 +3,9 @@ import Navbar from "../../components/Navbar/Navbar";
 import Overview from "./Overview";
 import ManageSponsors from "./ManageSponsors";
 import ManageProjects from "./ManageProjects";
-import ManageStudents from "./ManageStudents";
+import ManageVolunteers from "./ManageVolunteers";
+import ManageAttendance from "./ManageAttendance";
+import ManageRooms from "./ManageRooms";
 
 function Dashboard() {
   const [activeTab, setActiveTab] = useState("overview");
@@ -30,16 +32,37 @@ function Dashboard() {
             Visão Geral
           </button>
 
-          {/* 2. Adicione o botão Alunos no menu lateral */}
           <button
-            onClick={() => setActiveTab("students")}
+            onClick={() => setActiveTab("volunteers")}
             className={`text-left font-bold uppercase ${
-              activeTab === "students"
+              activeTab === "volunteers"
                 ? "underline underline-offset-4 decoration-[2px]"
                 : "hover:underline underline-offset-4 decoration-[2px]"
             }`}
           >
-            Alunos
+            Voluntários
+          </button>
+
+          <button
+            onClick={() => setActiveTab("attendance")}
+            className={`text-left font-bold uppercase ${
+              activeTab === "attendance"
+                ? "underline underline-offset-4 decoration-[2px]"
+                : "hover:underline underline-offset-4 decoration-[2px]"
+            }`}
+          >
+            Chamada
+          </button>
+
+          <button
+            onClick={() => setActiveTab("rooms")}
+            className={`text-left font-bold uppercase ${
+              activeTab === "rooms"
+                ? "underline underline-offset-4 decoration-[2px]"
+                : "hover:underline underline-offset-4 decoration-[2px]"
+            }`}
+          >
+            Salas
           </button>
 
           <button
@@ -71,19 +94,21 @@ function Dashboard() {
 
         {/* ================= Conteúdo Dinâmico ================= */}
         <main className="flex-1 p-8 md:p-12 overflow-y-auto">
-          {/* O título do topo muda dinamicamente */}
           <header className="mb-12">
             <h1 className="text-5xl md:text-7xl font-extrabold uppercase tracking-tighter leading-none">
               {activeTab === "overview" && "Visão Geral"}
-              {activeTab === "students" && "Gerenciar Alunos"}
+              {activeTab === "volunteers" && "Cadastrar Voluntário"}
+              {activeTab === "attendance" && "Chamada"}
+              {activeTab === "rooms" && "Alocação de Salas"}
               {activeTab === "projects" && "Gerenciar Projetos"}
               {activeTab === "sponsors" && "Gerenciar Parceiros"}
             </h1>
           </header>
 
-          {/* 3. Renderiza os componentes. Passamos o setActiveTab pro Overview! */}
           {activeTab === "overview" && <Overview onNavigate={setActiveTab} />}
-          {activeTab === "students" && <ManageStudents />}
+          {activeTab === "volunteers" && <ManageVolunteers />}
+          {activeTab === "attendance" && <ManageAttendance />}
+          {activeTab === "rooms" && <ManageRooms />}
           {activeTab === "projects" && <ManageProjects />}
           {activeTab === "sponsors" && <ManageSponsors />}
         </main>
