@@ -3,7 +3,6 @@ interface OverviewProps {
 }
 
 function Overview({ onNavigate }: OverviewProps) {
-  // Dados dummy para o resumo
   const stats = [
     { label: "Jovens Atendidos", value: "142", color: "bg-green-primary" },
     { label: "Voluntários Ativos", value: "38", color: "bg-yellow-400" },
@@ -11,7 +10,6 @@ function Overview({ onNavigate }: OverviewProps) {
     { label: "Parceiros", value: "12", color: "bg-orange-primary" },
   ];
 
-  // Dados dummy para o mural de atividades
   const activities = [
     {
       id: 1,
@@ -99,19 +97,11 @@ function Overview({ onNavigate }: OverviewProps) {
           </h2>
           <div className="flex flex-col gap-4">
             <button
-              onClick={() => onNavigate("students")}
+              onClick={() => onNavigate("attendance")}
               className="w-full bg-white text-black font-extrabold uppercase py-4 border-[3px] border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:bg-green-primary hover:text-white transition-all cursor-pointer text-left px-6 flex justify-between items-center"
             >
-              <span>+ Novo Aluno</span>
-              <span className="text-2xl leading-none">→</span>
-            </button>
-            <button className="w-full bg-white text-black font-extrabold uppercase py-4 border-[3px] border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:bg-green-primary hover:text-white transition-all cursor-pointer text-left px-6 flex justify-between items-center">
               <span>+ Chamada do Dia</span>
               <span className="text-2xl leading-none">→</span>
-            </button>
-            <button className="w-full bg-green-primary text-white font-extrabold uppercase py-4 border-[3px] border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_theme(color.green-primary)] hover:bg-white hover:text-green-primary transition-all cursor-pointer text-left px-6 flex justify-between items-center mt-4">
-              <span>Gerenciar Permissões</span>
-              <span className="text-2xl leading-none">⚙</span>
             </button>
           </div>
         </section>
