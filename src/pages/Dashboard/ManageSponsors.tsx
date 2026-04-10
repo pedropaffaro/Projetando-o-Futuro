@@ -28,7 +28,7 @@ function ManageSponsors() {
   return (
     <div className="flex flex-col gap-12">
       {/* FORMULÁRIO DE ADIÇÃO */}
-      <section className="bg-white border-[3px] border-black p-8 shadow-[8px_8px_0px_0px_theme(colors.green-primary)]">
+      <section className="bg-white border-[3px] border-black p-8 shadow-[8px_8px_0px_0px_black]">
         <h2 className="text-3xl font-extrabold uppercase mb-6 tracking-tighter">
           Adicionar Novo Parceiro
         </h2>
@@ -51,7 +51,7 @@ function ManageSponsors() {
           />
           <button
             type="submit"
-            className="md:col-span-2 bg-green-primary text-white font-extrabold uppercase py-4 border-[3px] border-green-primary hover:bg-white hover:text-green-primary transition-colors cursor-pointer"
+            className="md:col-span-2 bg-green-primary text-white font-extrabold uppercase py-4 border-[3px] border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_theme(color.green-primary)] hover:bg-white hover:text-green-primary transition-all cursor-pointer mt-2"
           >
             Confirmar e Publicar no Site
           </button>

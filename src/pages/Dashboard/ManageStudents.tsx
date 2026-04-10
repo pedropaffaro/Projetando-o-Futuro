@@ -187,7 +187,7 @@ function ManageStudents() {
 
         <button
           type="submit"
-          className="md:col-span-2 bg-green-primary text-white font-extrabold uppercase py-4 border-[3px] border-green-primary hover:bg-white hover:text-green-primary transition-colors cursor-pointer"
+          className="bg-green-primary text-white font-extrabold uppercase py-4 border-[3px] border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-white hover:text-black transition-all cursor-pointer mt-2"
         >
           Salvar Ficha do Aluno
         </button>
