@@ -42,6 +42,9 @@ function Navbar() {
           <span onClick={() => handleNavClick("projetos")} className={linkClass}>Projetos</span>
         </li>
         <li>
+          <span onClick={() => handleNavClick("fotos")} className={linkClass}>Fotos</span>
+        </li>
+        <li>
           <span onClick={() => handleNavClick("como-ajudar")} className={linkClass}>Como Ajudar</span>
         </li>
         <li>

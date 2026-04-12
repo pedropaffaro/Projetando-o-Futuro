@@ -20,7 +20,7 @@ function SponsorsCarousel() {
   ];
 
   return (
-    <section className="bg-white py-18 overflow-hidden w-full border-b-[3px] border-black">
+    <section className="bg-green-secondary py-18 overflow-hidden w-full border-b-[3px] border-black">
       <div className="container mx-auto px-6 mb-12">
         <h2 className="text-5xl md:text-7xl font-extrabold uppercase tracking-tighter text-black">
           Nossos Parceiros

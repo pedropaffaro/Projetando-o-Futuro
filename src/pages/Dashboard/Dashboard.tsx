@@ -4,6 +4,7 @@ import Overview from "./Overview";
 import ManageSponsors from "./ManageSponsors";
 import ManageProjects from "./ManageProjects";
 import ManageVolunteers from "./ManageVolunteers";
+import ManageChilds from "./ManageChilds";
 import ManageAttendance from "./ManageAttendance";
 import ManageRooms from "./ManageRooms";
 
@@ -41,6 +42,17 @@ function Dashboard() {
             }`}
           >
             Voluntários
+          </button>
+
+          <button
+            onClick={() => setActiveTab("childs")}
+            className={`text-left font-bold uppercase ${
+              activeTab === "childs"
+                ? "underline underline-offset-4 decoration-[2px]"
+                : "hover:underline underline-offset-4 decoration-[2px]"
+            }`}
+          >
+            Crianças
           </button>
 
           <button
@@ -98,15 +110,17 @@ function Dashboard() {
             <h1 className="text-5xl md:text-7xl font-extrabold uppercase tracking-tighter leading-none">
               {activeTab === "overview" && "Visão Geral"}
               {activeTab === "volunteers" && "Cadastrar Voluntário"}
+              {activeTab === "childs" && "Cadastrar Crianças"}
               {activeTab === "attendance" && "Chamada"}
               {activeTab === "rooms" && "Alocação de Salas"}
               {activeTab === "projects" && "Gerenciar Projetos"}
               {activeTab === "sponsors" && "Gerenciar Parceiros"}
-            </h1>
+            </h1> 
           </header>
 
           {activeTab === "overview" && <Overview onNavigate={setActiveTab} />}
           {activeTab === "volunteers" && <ManageVolunteers />}
+          {activeTab === "childs" && <ManageChilds />}
           {activeTab === "attendance" && <ManageAttendance />}
           {activeTab === "rooms" && <ManageRooms />}
           {activeTab === "projects" && <ManageProjects />}

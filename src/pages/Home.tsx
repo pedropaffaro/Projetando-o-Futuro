@@ -3,6 +3,23 @@ import Navbar from "../components/Navbar/Navbar";
 import SponsorsCarousel from "../components/SponsorsCarousel/SponsorsCarousel";
 import CTACard from "../components/CTACard/CTACard";
 import Footer from "../components/Footer/Footer";
+import Carousel from "../components/Carousel/Carousel";
+import type { ImageType } from "../components/Carousel/Carousel";
+
+const img1: ImageType = {
+  src: "../../public/carousel/crianca1.jpeg",
+  alt: "fotos de um monte de criança",
+  caption: "crianças"
+}
+
+const img2: ImageType = {
+  src: "../../public/carousel/crianca2.jpg",
+  alt: "fotos de mais um monte de criança",
+  caption: "mais crianças"
+}
+
+
+
 
 function Home() {
   const [pixOpen, setPixOpen] = useState(false);
@@ -87,6 +104,7 @@ function Home() {
         </div>
       )}
 
+
       <section id="sobre" className="bg-white border-b-[3px] border-black">
         <div className="container mx-auto max-w-7xl px-6">
           <div className="flex flex-col md:flex-row items-start gap-8 md:gap-16 py-20 md:py-32 border-b-[3px] border-black">
@@ -114,7 +132,34 @@ function Home() {
         </div>
       </section>
 
-      <section id="como-ajudar" className="bg-green-secondary py-16 px-6 font-sans text-black border-y-[3px] border-black">
+
+      <section id="projetos" className="bg-green-secondary py-16 px-6 font-sans text-black border-y-[3px] border-black">
+          <div className="container mx-auto max-w-7xl">
+            <div className="flex flex-col md:flex-row md:items-end justify-between border-b-[3px] border-black pb-8 mb-12 gap-8">
+                <h2 className="text-6xl md:text-8xl font-extrabold uppercase tracking-tighter leading-none w-full md:w-1/2">
+                  Projetos
+                </h2>
+            </div>
+            <p className="text-2xl md:text-3xl text-black leading-snug w-full md:w-1/2 font-medium">
+              kkkkkkkkkkkkkkkkkkkkkk
+            </p>
+          </div>
+        
+      </section>
+
+      <section id="fotos" className="bg-green-secondary py-16 px-6 font-sans text-black border-y-[3px] border-black">
+          <div className="container mx-auto max-w-7xl">
+            <div className="flex flex-col md:flex-row md:items-end justify-between border-b-[3px] border-black pb-8 mb-12 gap-8">
+                <h2 className="text-6xl md:text-8xl font-extrabold uppercase tracking-tighter leading-none w-full md:w-1/2">
+                  Fotos
+                </h2>
+            </div>
+          </div>
+        <Carousel images = {[img1, img2]}></Carousel>
+      </section>
+
+
+      <section id="como-ajudar" className="bg-white py-16 px-6 font-sans text-black border-y-[3px] border-black">
         <div className="container mx-auto max-w-7xl">
           <div className="flex flex-col md:flex-row md:items-end justify-between border-b-[3px] border-black pb-8 mb-12 gap-8">
             <h2 className="text-6xl md:text-8xl font-extrabold uppercase tracking-tighter leading-none w-full md:w-1/2">
@@ -155,9 +200,11 @@ function Home() {
         </div>
       </section>
 
+
       <section id="parceiros">
         <SponsorsCarousel />
       </section>
+
 
       <Footer />
     </>
