@@ -70,6 +70,12 @@ const ALL_PROJECTS = [
   },
 ];
 
+function bgColorStatus(statusBg: string) {
+  if(statusBg == "Ativo") return("bg-emerald-400");
+  else if(statusBg === "Pausado") return("bg-yellow-400");
+  else return ("bg-red-400");
+}
+
 function Projects() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedProject, setSelectedProject] = useState<typeof ALL_PROJECTS[0] | null>(null);
@@ -188,8 +194,8 @@ function Projects() {
                 ✕
               </button>
               
-              <div className={`inline-block px-4 py-2 border-[3px] border-black text-sm font-black uppercase mb-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${selectedProject.color}`}>
-                <span className={selectedProject.color.includes("white") || selectedProject.color.includes("yellow") ? "text-black" : "text-white"}>
+              <div className={`inline-block px-4 py-2 border-[3px] border-black text-sm font-black uppercase mb-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${bgColorStatus(selectedProject.status)}`}>
+                <span className={selectedProject.color.includes("black") ? "text-white" : "text-black"}>
                   {selectedProject.status}
                 </span>
               </div>
