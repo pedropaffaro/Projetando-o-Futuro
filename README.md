@@ -1,73 +1,66 @@
-# React + TypeScript + Vite
+# Projetando o Futuro
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+#### Alunos:
+Henrique Vieira Lima (15459372)
+Pedro Augusto Ferraro Paffaro (15483380)
+Alec Campos Aoki (15436800)
 
-Currently, two official plugins are available:
+Este é um projeto de Desenvolvimento Web construído para a ONG **Projetando o Futuro**.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Sobre o Projeto
 
-## React Compiler
+O projeto foi desenvolvido com tecnologias modernas como **React**, **TypeScript** e **Vite**, o que permitiu uma melhor gestão de estados e componentes.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Requisitos da Disciplina Atendidos
 
-## Expanding the ESLint configuration
+1. **Responsividade**: Adapta-se a celulares, tablets e desktops (p.ex. Navbar adaptativa em CSS).
+2. **Acessibilidade**: Implementação de tags semânticas, rótulos (labels) e atributos adequados.
+3. **Modularização**: Separação cuidadosa da aplicação em componentes React independentes (ex: Navbar, Carousel, Cards).
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Levantamento de Requisitos (Cliente)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Em contato direto com o diretor da ONG, foram definidos os requisitos principais para o público externo e para os voluntários:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### 1. Visão Pública (Externa)
+- Informações gerais sobre a atuação e impacto da ONG.
+- Galeria de fotos e publicações sobre projetos e aulas desenvolvidos.
+- Informações claras sobre doações, voluntariado e inscrição de crianças no programa.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### 2. Segurança e LGPD
+- Devido a um rigoroso controle de acesso e para garantir a segurança dos dados sensíveis dos voluntários e das crianças, decidiu-se **manter a captação e o armazenamento de formulários nos sistemas Google Forms/Excel** adotados atualmente pela gestão, em vez de salvar diretamente no banco de dados do site.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 3. Funcionalidades de Uso Interno (Dashboard dos Voluntários)
+- Registro de presença das crianças.
+- Alocação de salas para os monitores e turmas.
+- Publicação de novos projetos e parcerias.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Como instalar e rodar o projeto
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Siga o passo a passo abaixo para rodar a aplicação localmente:
+
+### Pré-requisitos
+- [Node.js](https://nodejs.org/) (versão sugerida: 18+).
+
+### Passos
+
+1. Clone o repositório ou faça o download:
+   ```bash
+   git clone <url-do-repositorio>
+   ```
+
+2. Entre no diretório do projeto:
+   ```bash
+   cd Projetando-o-Futuro
+   ```
+
+3. Instale as dependências:
+   ```bash
+   npm install
+   ```
+
+4. Rode o servidor de desenvolvimento:
+   ```bash
+   npm run dev
+   ```
+
+5. O Vite inicializará o projeto (geralmente em `http://localhost:5173/`). Abra essa URL no seu navegador.

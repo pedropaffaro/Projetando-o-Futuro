@@ -1,3 +1,4 @@
+// Componente APP que renderiza uma pagina a depender da rota específica
 import { Routes, Route } from "react-router-dom";
 
 import Home from "./pages/Home";

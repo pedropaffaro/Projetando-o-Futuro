@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+// dados dummy
 const SALAS = [
   { id: 1, nome: "Sala Janela", color: "bg-purple-primary" },
   { id: 2, nome: "Sala TV", color: "bg-green-secondary" },
@@ -30,17 +31,19 @@ const TURMA_COLORS = [
   "bg-green-primary",
 ];
 
+// uma alocação tem os tipos:
 interface Alocacao {
   monitorA: string;
   monitorB: string;
   salaId: number | null;
 }
 
+
 type Grade = Record<string, Alocacao>; // key = `${horarioId}-${turmaIndex}`
 
 function criarGradeInicial(): Grade {
   const grade: Grade = {};
-  HORARIOS.forEach((h) => {
+  HORARIOS.forEach((h) => { // gera um valor default para cada sala em cada horario
     TURMAS_BASE.forEach((_, ti) => {
       grade[`${h.id}-${ti}`] = { monitorA: "", monitorB: "", salaId: null };
     });

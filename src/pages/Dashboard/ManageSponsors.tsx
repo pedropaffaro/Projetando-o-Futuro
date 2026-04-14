@@ -12,14 +12,17 @@ function ManageSponsors() {
   const [newName, setNewName] = useState("");
   const [newLogo, setNewLogo] = useState("");
 
+  // função para adicionar um patrocinador
   const handleAddSponsor = (e: React.FormEvent) => {
     e.preventDefault();
+    // constroi um novo patrociandor default
     const newSponsor = {
       id: Date.now(),
       name: newName,
       logoUrl: newLogo || "https://via.placeholder.com/150",
     };
-    setSponsors([...sponsors, newSponsor]);
+    setSponsors([...sponsors, newSponsor]); // adiciona o novo sponsor
+    // limpa os states
     setNewName("");
     setNewLogo("");
     alert("Parceiro adicionado com sucesso! (Simulação)");
@@ -64,6 +67,7 @@ function ManageSponsors() {
           Parceiros Atuais
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* reenderiza os sponsors */}
           {sponsors.map((s) => (
             <div
               key={s.id}

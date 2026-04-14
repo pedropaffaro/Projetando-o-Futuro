@@ -3,6 +3,7 @@ import Input from "../../components/Input/Input";
 import ProjectCard from "../../components/ProjectCard/ProjectCard"; // Importando nosso novo componente
 
 function ManageProjects() {
+  {/* projetos dummy */}
   const [projects, setProjects] = useState([
     {
       id: 1,
@@ -22,13 +23,15 @@ function ManageProjects() {
     },
   ]);
 
+  // estados para adição de novo projeto
   const [newTitle, setNewTitle] = useState("");
   const [newDescription, setNewDescription] = useState("");
   const [newStatus, setNewStatus] = useState("Ativo");
 
+  // função para adição do projeto
   const handleAddProject = (e: React.FormEvent) => {
     e.preventDefault();
-    const newProject = {
+    const newProject = { // gera o novo projeto
       id: Date.now(),
       title: newTitle,
       description: newDescription,
@@ -41,14 +44,17 @@ function ManageProjects() {
       ][Math.floor(Math.random() * 4)],
     };
 
+    // adiciona o projeto na lista de projetos
     setProjects([newProject, ...projects]);
-    setNewTitle("");
+    // atualiza os estados de novo projeto
+    setNewTitle(""); 
     setNewDescription("");
     setNewStatus("Ativo");
   };
 
   const handleDelete = (idToRemove: number) => {
     if (window.confirm("Tem certeza que deseja excluir este projeto?")) {
+      // atualiza os projetos setando os que não tem o id passado
       setProjects(projects.filter((p) => p.id !== idToRemove));
     }
   };
@@ -115,6 +121,7 @@ function ManageProjects() {
           Projetos Ativos e Pausados
         </h2>
 
+        {/* listagem fazendo um map, para cada projeto gera um card */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {projects.map((project) => (
             <ProjectCard

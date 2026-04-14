@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 
+// interface para props do componente
 interface CTACardProps {
   icon: string;
   altText: string;
@@ -10,6 +11,7 @@ interface CTACardProps {
   onClick?: () => void;
 }
 
+// retorna um card customisado de patrocinio baseado nas props
 function CTACard({ icon, altText, description, textButton, to, href, onClick }: CTACardProps) {
   return (
     <div className="bg-white border-[3px] border-black p-8 md:p-10 flex flex-col items-start h-full hover:-translate-y-2 transition-transform duration-200">
@@ -21,6 +23,7 @@ function CTACard({ icon, altText, description, textButton, to, href, onClick }: 
         {description}
       </p>
 
+      {/* redirecionamento condicional baseado no que é passado nas props */}
       {href ? (
         <a
           href={href}

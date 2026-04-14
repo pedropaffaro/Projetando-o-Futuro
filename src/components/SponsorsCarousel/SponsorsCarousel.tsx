@@ -12,6 +12,7 @@ const initialSponsors: Sponsor[] = [
 ];
 
 function SponsorsCarousel() {
+  // aumentando o numero de elementos para o carrosel ter a sensação de infinito
   const safeSponsors = [
     ...initialSponsors,
     ...initialSponsors,
@@ -20,13 +21,15 @@ function SponsorsCarousel() {
   ];
 
   return (
-    <section className="bg-green-secondary py-18 overflow-hidden w-full border-b-[3px] border-black">
+    <section className="bg-white py-18 overflow-hidden w-full border-b-[3px] border-black">
       <div className="container mx-auto px-6 mb-12">
         <h2 className="text-5xl md:text-7xl font-extrabold uppercase tracking-tighter text-black">
           Nossos Parceiros
         </h2>
       </div>
 
+      {/*iteração para gerar cada um dos cards, repare que há dois blocos "repetidos, porém isso é uma tecnica
+      que é utilizada para dar a sensação de que uma animação é infinita, quando uma terminar a outra começa logo em sequencia */}
       <div className="flex w-full overflow-hidden group pb-4">
         <div className="flex w-max animate-scroll items-center gap-8 pr-8 group-hover:[animation-play-state:paused]">
           {safeSponsors.map((sponsor, index) => (

@@ -8,7 +8,8 @@ import ManageChilds from "./ManageChilds";
 import ManageAttendance from "./ManageAttendance";
 import ManageRooms from "./ManageRooms";
 
-function Dashboard() {
+function Dashboard() { 
+  // dashbord começa com a tela interna padrão overview
   const [activeTab, setActiveTab] = useState("overview");
 
   return (
@@ -22,6 +23,7 @@ function Dashboard() {
             Administração
           </p>
 
+          {/* diversos botões cada um setando uma determinada janela ativa */}
           <button
             onClick={() => setActiveTab("overview")}
             className={`text-left font-bold uppercase ${
@@ -107,6 +109,7 @@ function Dashboard() {
         {/* ================= Conteúdo Dinâmico ================= */}
         <main className="flex-1 p-8 md:p-12 overflow-y-auto">
           <header className="mb-12">
+            {/* Define qual o titulo da tela interna */}
             <h1 className="text-5xl md:text-7xl font-extrabold uppercase tracking-tighter leading-none">
               {activeTab === "overview" && "Visão Geral"}
               {activeTab === "volunteers" && "Cadastrar Voluntário"}
@@ -117,7 +120,8 @@ function Dashboard() {
               {activeTab === "sponsors" && "Gerenciar Parceiros"}
             </h1> 
           </header>
-
+          
+          {/* renderiza a "tela interna" correspondente */}
           {activeTab === "overview" && <Overview onNavigate={setActiveTab} />}
           {activeTab === "volunteers" && <ManageVolunteers />}
           {activeTab === "childs" && <ManageChilds />}

@@ -1,3 +1,7 @@
+/* implementação de um componente de card de projeto que é utilizado
+no backoffice da aplicação */
+
+// props do card
 interface ProjectCardProps {
   title: string;
   description: string;
@@ -7,7 +11,8 @@ interface ProjectCardProps {
   onDelete?: () => void;
 }
 
-function ProjectCard({
+// componente de card
+function ProjectCard({ // props passadas
   title,
   description,
   status,
@@ -23,7 +28,7 @@ function ProjectCard({
       ? "bg-yellow-200"
       : "bg-red-200";
 
-  return (
+  return ( // html do card
     <div className="border-[3px] border-black p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] flex flex-col h-full bg-white relative overflow-hidden group">
       {/* Faixa de cor no topo do card */}
       <div

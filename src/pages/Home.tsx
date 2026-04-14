@@ -1,3 +1,4 @@
+// import dos componentes que serão usados
 import { useState } from "react";
 import Navbar from "../components/Navbar/Navbar";
 import SponsorsCarousel from "../components/SponsorsCarousel/SponsorsCarousel";
@@ -6,22 +7,22 @@ import Footer from "../components/Footer/Footer";
 import Carousel from "../components/Carousel/Carousel";
 import type { ImageType } from "../components/Carousel/Carousel";
 
+// imagens para colocar no carrosel
 const img1: ImageType = {
-  src: "../../public/carousel/crianca1.jpeg",
+  src: "../../carousel/crianca1.jpeg",
   alt: "fotos de um monte de criança",
   caption: "crianças"
 }
 
 const img2: ImageType = {
-  src: "../../public/carousel/crianca2.jpg",
+  src: "../../carousel/crianca2.jpg",
   alt: "fotos de mais um monte de criança",
   caption: "mais crianças"
 }
 
-
-
-
+// função de render da home
 function Home() {
+  // state para abrir a seção de pix
   const [pixOpen, setPixOpen] = useState(false);
 
   return (
@@ -104,7 +105,7 @@ function Home() {
         </div>
       )}
 
-
+      {/* sessão sobre a ONG */}
       <section id="sobre" className="bg-white border-b-[3px] border-black">
         <div className="container mx-auto max-w-7xl px-6">
           <div className="flex flex-col md:flex-row items-start gap-8 md:gap-16 py-20 md:py-32 border-b-[3px] border-black">
@@ -132,22 +133,81 @@ function Home() {
         </div>
       </section>
 
-
+      {/* Sessão sobre os projetos */}
       <section id="projetos" className="bg-green-secondary py-16 px-6 font-sans text-black border-y-[3px] border-black">
-          <div className="container mx-auto max-w-7xl">
-            <div className="flex flex-col md:flex-row md:items-end justify-between border-b-[3px] border-black pb-8 mb-12 gap-8">
-                <h2 className="text-6xl md:text-8xl font-extrabold uppercase tracking-tighter leading-none w-full md:w-1/2">
-                  Projetos
-                </h2>
-            </div>
-            <p className="text-2xl md:text-3xl text-black leading-snug w-full md:w-1/2 font-medium">
-              kkkkkkkkkkkkkkkkkkkkkk
-            </p>
+        <div className="container mx-auto max-w-7xl">
+          <div className="flex flex-col md:flex-row md:items-end justify-between border-b-[3px] border-black pb-8 mb-12 gap-8">
+            <h2 className="text-6xl md:text-8xl font-extrabold uppercase tracking-tighter leading-none w-full md:w-1/2">
+              Projetos
+            </h2>
           </div>
-        
+          
+          <div className="flex flex-col gap-16 md:gap-24">
+            {/* Projeto 1 */}
+            <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16">
+              <div className="w-full md:w-1/2 flex flex-col gap-4">
+                <h3 className="text-4xl md:text-5xl font-extrabold uppercase tracking-tighter">
+                  Preparação Jovem
+                </h3>
+                <p className="text-xl md:text-2xl font-medium leading-snug">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                </p>
+              </div>
+              <div className="w-full md:w-1/2 flex flex-col items-center justify-center py-12 px-6 bg-white border-[3px] border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] transition-all duration-300">
+                <span className="text-7xl md:text-8xl font-black tracking-tighter leading-none">
+                  +100
+                </span>
+                <span className="text-lg md:text-xl font-bold uppercase tracking-widest text-center mt-4 text-gray-600">
+                  Jovens Atendidos
+                </span>
+              </div>
+            </div>
+
+            {/* Projeto 2 */}
+            <div className="flex flex-col md:flex-row-reverse items-center gap-8 md:gap-16">
+              <div className="w-full md:w-1/2 flex flex-col gap-4">
+                <h3 className="text-4xl md:text-5xl font-extrabold uppercase tracking-tighter md:text-right">
+                  Mobilização Social
+                </h3>
+                <p className="text-xl md:text-2xl font-medium leading-snug md:text-right">
+                  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </p>
+              </div>
+              <div className="w-full md:w-1/2 flex flex-col items-center justify-center py-12 px-6 bg-black border-[3px] border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] transition-all duration-300 text-white">
+                <span className="text-7xl md:text-8xl font-black tracking-tighter leading-none">
+                  +30
+                </span>
+                <span className="text-lg md:text-xl font-bold uppercase tracking-widest text-center mt-4 text-gray-300">
+                  Voluntários
+                </span>
+              </div>
+            </div>
+
+            {/* Projeto 3 */}
+            <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16">
+              <div className="w-full md:w-1/2 flex flex-col gap-4">
+                <h3 className="text-4xl md:text-5xl font-extrabold uppercase tracking-tighter">
+                  Mobilização Social
+                </h3>
+                <p className="text-xl md:text-2xl font-medium leading-snug">
+                  Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida.
+                </p>
+              </div>
+              <div className="w-full md:w-1/2 flex flex-col items-center justify-center py-12 px-6 bg-white border-[3px] border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] transition-all duration-300">
+                <span className="text-7xl md:text-8xl font-black tracking-tighter leading-none">
+                  +10
+                </span>
+                <span className="text-lg md:text-xl font-bold uppercase tracking-widest text-center mt-4 text-gray-600">
+                  Instituições Parceiras
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
-      <section id="fotos" className="bg-green-secondary py-16 px-6 font-sans text-black border-y-[3px] border-black">
+      {/* Sessão para as fotos */}
+      <section id="fotos" className="bg-white py-16 px-6 font-sans text-black border-y-[3px] border-black">
           <div className="container mx-auto max-w-7xl">
             <div className="flex flex-col md:flex-row md:items-end justify-between border-b-[3px] border-black pb-8 mb-12 gap-8">
                 <h2 className="text-6xl md:text-8xl font-extrabold uppercase tracking-tighter leading-none w-full md:w-1/2">
@@ -158,8 +218,8 @@ function Home() {
         <Carousel images = {[img1, img2]}></Carousel>
       </section>
 
-
-      <section id="como-ajudar" className="bg-white py-16 px-6 font-sans text-black border-y-[3px] border-black">
+      {/* Sessão para o apoia-se */}
+      <section id="como-ajudar" className="bg-green-secondary py-16 px-6 font-sans text-black border-y-[3px] border-black">
         <div className="container mx-auto max-w-7xl">
           <div className="flex flex-col md:flex-row md:items-end justify-between border-b-[3px] border-black pb-8 mb-12 gap-8">
             <h2 className="text-6xl md:text-8xl font-extrabold uppercase tracking-tighter leading-none w-full md:w-1/2">
@@ -200,7 +260,7 @@ function Home() {
         </div>
       </section>
 
-
+      {/* Sessão de parceiros */}
       <section id="parceiros">
         <SponsorsCarousel />
       </section>

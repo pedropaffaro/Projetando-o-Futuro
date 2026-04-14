@@ -1,4 +1,5 @@
 function ManageChilds() {
+  // frame que puxa o formulario de cadastro para os alunos
   {/* Tem que mudar o link do forms, não sei qual o do cadastro das crianças*/}
   return (  
     <div className="w-full border-[3px] border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]" style={{ height: "80vh" }}>

@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+
+// turmas dummy de exemplo
 const TURMAS = [
   {
     id: 1,
@@ -43,9 +45,12 @@ const TURMAS = [
   },
 ];
 
+// tipo presença tem uma quantidade referente a um tipo
 type Presenca = Record<number, "presente" | "falta" | "justificado" | null>;
 
 function ManageAttendance() {
+
+  // constroi a data de hoje
   const hoje = new Date().toLocaleDateString("pt-BR", {
     weekday: "long",
     year: "numeric",
@@ -53,18 +58,23 @@ function ManageAttendance() {
     day: "numeric",
   });
 
+  // states de controle para gerir presença
   const [turmaSelecionada, setTurmaSelecionada] = useState(TURMAS[0]);
   const [presenca, setPresenca] = useState<Presenca>({});
   const [salvo, setSalvo] = useState(false);
 
+  // atribuição de presença
   const marcar = (alunoId: number, status: "presente" | "falta" | "justificado") => {
+    // marca como presença alterada/não salva, 
     setSalvo(false);
     setPresenca((prev) => ({
-      ...prev,
+      ...prev, // mantem o valor dos outros alunos
+      // para o aluno selecionado, ou atualiza o estado dele ou desmarca o estado
       [alunoId]: prev[alunoId] === status ? null : status,
     }));
   };
 
+  // atualiza o state de presença salva
   const handleSalvar = () => {
     console.log("Chamada salva:", {
       turma: turmaSelecionada.nome,
@@ -74,18 +84,22 @@ function ManageAttendance() {
     setSalvo(true);
   };
 
+  // total de presentes
   const totalPresentes = turmaSelecionada.alunos.filter(
     (a) => presenca[a.id] === "presente"
   ).length;
 
+  // total de faltas
   const totalFaltas = turmaSelecionada.alunos.filter(
     (a) => presenca[a.id] === "falta"
   ).length;
 
+  // total de justificados
   const totalJustificados = turmaSelecionada.alunos.filter(
     (a) => presenca[a.id] === "justificado"
   ).length;
 
+  // quantidade total de alunos
   const todosMarcados = turmaSelecionada.alunos.every(
     (a) => presenca[a.id] !== null && presenca[a.id] !== undefined
   );
@@ -114,6 +128,7 @@ function ManageAttendance() {
           Selecionar Turma
         </p>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {/* reenderiza a seção das turmas */} 
           {TURMAS.map((turma) => (
             <button
               key={turma.id}

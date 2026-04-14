@@ -1,8 +1,10 @@
+// overview recebe uma function que recebe uma string para redirecionar para a tela internda de chamada
 interface OverviewProps {
   onNavigate: (tab: string) => void;
 }
 
 function Overview({ onNavigate }: OverviewProps) {
+  // função da tela interna com dados dummy
   const stats = [
     { label: "Jovens Atendidos", value: "142", color: "bg-green-primary" },
     { label: "Voluntários Ativos", value: "38", color: "bg-yellow-400" },
@@ -37,6 +39,7 @@ function Overview({ onNavigate }: OverviewProps) {
     },
   ];
 
+  // reenderização das divs com a informação dos status com map
   return (
     <div className="flex flex-col gap-12">
       <section>
@@ -60,6 +63,7 @@ function Overview({ onNavigate }: OverviewProps) {
         </div>
       </section>
 
+      {/* render das atividades com o map */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <section className="lg:col-span-2">
           <h2 className="text-3xl font-extrabold uppercase tracking-tighter mb-6 text-black">
@@ -96,7 +100,8 @@ function Overview({ onNavigate }: OverviewProps) {
             Acesso Rápido
           </h2>
           <div className="flex flex-col gap-4">
-            <button
+            {/* onNavigate para guia de chamada */}
+            <button 
               onClick={() => onNavigate("attendance")}
               className="w-full bg-white text-black font-extrabold uppercase py-4 border-[3px] border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:bg-green-primary hover:text-white transition-all cursor-pointer text-left px-6 flex justify-between items-center"
             >

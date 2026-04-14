@@ -1,4 +1,5 @@
 function Footer() {
+  // componente de footer de aplicação
   return (
     <footer className="bg-green-primary text-white px-6 py-12 md:py-20 font-sans">
       <div className="container mx-auto max-w-7xl">
