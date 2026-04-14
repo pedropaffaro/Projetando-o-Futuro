@@ -65,6 +65,11 @@ function Navbar() {
           </span>
         </li>
         <li>
+          <span onClick={() => handleNavClick("impacto")} className={linkClass}>
+            Impacto
+          </span>
+        </li>
+        <li>
           <span onClick={() => handleNavClick("fotos")} className={linkClass}>
             Fotos
           </span>
@@ -128,6 +133,11 @@ function Navbar() {
           <li>
             <span onClick={() => handleNavClick("sobre")} className={linkClass}>
               Sobre
+            </span>
+          </li>
+          <li>
+            <span onClick={() => handleNavClick("impacto")} className={linkClass}>
+              Impacto
             </span>
           </li>
           <li>

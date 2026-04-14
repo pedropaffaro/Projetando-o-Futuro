@@ -26,6 +26,8 @@ function ManageProjects() {
   // estados para adição de novo projeto
   const [newTitle, setNewTitle] = useState("");
   const [newDescription, setNewDescription] = useState("");
+  const [newFullDescription, setNewFullDescription] = useState("");
+  const [newImage, setNewImage] = useState<File | null>(null);
   const [newStatus, setNewStatus] = useState("Ativo");
 
   // função para adição do projeto
@@ -35,6 +37,8 @@ function ManageProjects() {
       id: Date.now(),
       title: newTitle,
       description: newDescription,
+      fullDescription: newFullDescription,
+      image: newImage ? URL.createObjectURL(newImage) : null,
       status: newStatus,
       color: [
         "bg-emerald-400",
@@ -49,6 +53,8 @@ function ManageProjects() {
     // atualiza os estados de novo projeto
     setNewTitle(""); 
     setNewDescription("");
+    setNewFullDescription("");
+    setNewImage(null);
     setNewStatus("Ativo");
   };
 
@@ -103,6 +109,35 @@ function ManageProjects() {
               value={newDescription}
               onChange={(e) => setNewDescription(e.target.value)}
               required
+            />
+          </div>
+
+          <div className="flex flex-col gap-2 w-full">
+            <label className="font-bold uppercase tracking-wide text-black text-sm md:text-base">
+              Descrição Completa
+            </label>
+            <textarea
+              className="w-full border-[3px] border-black p-4 text-lg bg-white text-black placeholder-gray-400 focus:outline-none focus:bg-gray-50 transition-colors resize-y rounded-none h-48"
+              placeholder="Descreva detalhadamente o projeto..."
+              value={newFullDescription}
+              onChange={(e) => setNewFullDescription(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="flex flex-col gap-2 w-full">
+            <label className="font-bold uppercase tracking-wide text-black text-sm md:text-base">
+              Upload de Imagem
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              className="w-full border-[3px] border-black p-4 text-lg bg-white text-black focus:outline-none focus:bg-gray-50 transition-colors cursor-pointer appearance-none rounded-none"
+              onChange={(e) => {
+                if (e.target.files && e.target.files[0]) {
+                  setNewImage(e.target.files[0]);
+                }
+              }}
             />
           </div>
 

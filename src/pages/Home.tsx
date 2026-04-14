@@ -134,11 +134,11 @@ function Home() {
       </section>
 
       {/* Sessão sobre os projetos */}
-      <section id="projetos" className="bg-green-secondary py-16 px-6 font-sans text-black border-y-[3px] border-black">
+      <section id="impacto" className="bg-green-secondary py-16 px-6 font-sans text-black border-y-[3px] border-black">
         <div className="container mx-auto max-w-7xl">
           <div className="flex flex-col md:flex-row md:items-end justify-between border-b-[3px] border-black pb-8 mb-12 gap-8">
             <h2 className="text-6xl md:text-8xl font-extrabold uppercase tracking-tighter leading-none w-full md:w-1/2">
-              Projetos
+              Impacto
             </h2>
           </div>
           
@@ -167,7 +167,7 @@ function Home() {
             <div className="flex flex-col md:flex-row-reverse items-center gap-8 md:gap-16">
               <div className="w-full md:w-1/2 flex flex-col gap-4">
                 <h3 className="text-4xl md:text-5xl font-extrabold uppercase tracking-tighter md:text-right">
-                  Mobilização Social
+                  Cidadania para todos
                 </h3>
                 <p className="text-xl md:text-2xl font-medium leading-snug md:text-right">
                   Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.

@@ -9,6 +9,7 @@ interface ProjectCardProps {
   color: string;
   onEdit?: () => void;
   onDelete?: () => void;
+  onClick?: () => void;
 }
 
 // componente de card
@@ -20,6 +21,7 @@ function ProjectCard({
   color,
   onEdit,
   onDelete,
+  onClick,
 }: ProjectCardProps) {
   // Define a cor da etiqueta baseada no status
   const statusBg =
@@ -31,7 +33,10 @@ function ProjectCard({
 
   return (
     // html do card
-    <div className="border-[3px] border-black p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] flex flex-col h-full bg-white relative overflow-hidden group">
+    <div
+      onClick={onClick}
+      className={`border-[3px] border-black p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] flex flex-col h-full bg-white relative overflow-hidden group ${onClick ? 'cursor-pointer hover:-translate-y-1 hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all' : ''}`}
+    >
       {/* Faixa de cor no topo do card */}
       <div
         className={`absolute top-0 left-0 w-full h-3 ${color} border-b-[3px] border-black`}
@@ -56,7 +61,10 @@ function ProjectCard({
         <div className="flex gap-2 mt-auto pt-4 border-t-[3px] border-black">
           {onEdit && (
             <button
-              onClick={onEdit}
+              onClick={(e) => {
+                e.stopPropagation();
+                onEdit();
+              }}
               className="flex-1 bg-white text-black font-bold uppercase py-2 border-[2px] border-black hover:bg-black hover:text-white transition-colors cursor-pointer text-sm"
             >
               Editar
@@ -64,7 +72,10 @@ function ProjectCard({
           )}
           {onDelete && (
             <button
-              onClick={onDelete}
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete();
+              }}
               className="flex-1 bg-white text-red-600 font-bold uppercase py-2 border-[2px] border-black hover:bg-red-600 hover:text-white transition-colors cursor-pointer text-sm"
             >
               Excluir
