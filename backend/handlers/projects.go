@@ -88,6 +88,6 @@ func DeleteProject(c *gin.Context) {
     }
 
     // Exclui do banco
-    database.DB.Delete(&project)
+    database.DB.Unscoped().Delete(&project)
     c.JSON(http.StatusOK, gin.H{"message": "Projeto excluído com sucesso"})
 }
