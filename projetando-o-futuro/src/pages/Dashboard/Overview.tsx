@@ -1,15 +1,24 @@
 // overview recebe uma function que recebe uma string para redirecionar para a tela internda de chamada
 interface OverviewProps {
   onNavigate: (tab: string) => void;
+  projects?: any[];
+  sponsors?: any[];
 }
 
-function Overview({ onNavigate }: OverviewProps) {
+function Overview({ onNavigate, projects = [], sponsors = [] }: OverviewProps) {
+  const totalProjects = String(projects.length).padStart(2, "0");
+  const totalSponsors = String(sponsors.length).padStart(2, "0");
+
   // função da tela interna com dados dummy
   const stats = [
     { label: "Jovens Atendidos", value: "142", color: "bg-green-primary" },
     { label: "Voluntários Ativos", value: "38", color: "bg-yellow-400" },
-    { label: "Projetos Atuais", value: "05", color: "bg-purple-secondary" },
-    { label: "Parceiros", value: "12", color: "bg-orange-primary" },
+    {
+      label: "Projetos Atuais",
+      value: totalProjects,
+      color: "bg-purple-secondary",
+    },
+    { label: "Parceiros", value: totalSponsors, color: "bg-orange-primary" },
   ];
 
   const activities = [
@@ -101,7 +110,7 @@ function Overview({ onNavigate }: OverviewProps) {
           </h2>
           <div className="flex flex-col gap-4">
             {/* onNavigate para guia de chamada */}
-            <button 
+            <button
               onClick={() => onNavigate("attendance")}
               className="w-full bg-white text-black font-extrabold uppercase py-4 border-[3px] border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:bg-green-primary hover:text-white transition-all cursor-pointer text-left px-6 flex justify-between items-center"
             >

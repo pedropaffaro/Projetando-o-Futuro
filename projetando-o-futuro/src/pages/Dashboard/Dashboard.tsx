@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import Overview from "./Overview";
 import ManageSponsors from "./ManageSponsors";
@@ -8,9 +8,42 @@ import ManageChilds from "./ManageChilds";
 import ManageAttendance from "./ManageAttendance";
 import ManageRooms from "./ManageRooms";
 
-function Dashboard() { 
-  // dashbord começa com a tela interna padrão overview
+function Dashboard() {
   const [activeTab, setActiveTab] = useState("overview");
+
+  // 1. Estados para armazenar os dados de projetos e patrocinadores
+  const [projects, setProjects] = useState<any[]>([]);
+  const [sponsors, setSponsors] = useState<any[]>([]);
+
+  // 2. Busca os dados da API sempre que a aba ativa for a "overview"
+  useEffect(() => {
+    if (activeTab === "overview") {
+      const fetchDashboardData = async () => {
+        try {
+          // Promise.all permite fazer as duas requisições ao mesmo tempo, 
+          // deixando o carregamento mais rápido!
+          const [resProjects, resSponsors] = await Promise.all([
+            fetch("http://localhost:8080/projects"),
+            fetch("http://localhost:8080/sponsors")
+          ]);
+
+          if (resProjects.ok) {
+            const dataProjects = await resProjects.json();
+            setProjects(dataProjects);
+          }
+
+          if (resSponsors.ok) {
+            const dataSponsors = await resSponsors.json();
+            setSponsors(dataSponsors);
+          }
+        } catch (error) {
+          console.error("Erro ao buscar dados para o dashboard:", error);
+        }
+      };
+
+      fetchDashboardData();
+    }
+  }, [activeTab]); // A dependência garante que o fetch ocorra ao mudar de aba
 
   return (
     <div className="min-h-screen bg-[#FAFAFA] flex flex-col">
@@ -121,8 +154,14 @@ function Dashboard() {
             </h1> 
           </header>
           
-          {/* renderiza a "tela interna" correspondente */}
-          {activeTab === "overview" && <Overview onNavigate={setActiveTab} />}
+          {/* 3. Passamos os dados via props para o Overview */}
+          {activeTab === "overview" && (
+            <Overview 
+              onNavigate={setActiveTab} 
+              projects={projects} 
+              sponsors={sponsors} 
+            />
+          )}
           {activeTab === "volunteers" && <ManageVolunteers />}
           {activeTab === "childs" && <ManageChilds />}
           {activeTab === "attendance" && <ManageAttendance />}
