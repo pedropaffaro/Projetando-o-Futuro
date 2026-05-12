@@ -12,8 +12,17 @@ var DB *gorm.DB
 func InitDB() {
     database, _ := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
     
-    // Cria as tabelas automaticamente
-    database.AutoMigrate(&models.Project{}, &models.Sponsor{}, &models.User{})
+    // Cria/atualiza as tabelas automaticamente
+	database.AutoMigrate(
+		&models.Project{},
+		&models.Sponsor{},
+		&models.User{},
+		&models.Monitor{},
+		&models.Aluno{},
+		&models.Alocacao{},
+		&models.Chamada{},
+	)
+
 
     // Criar admin padrão se não existir
     var count int64

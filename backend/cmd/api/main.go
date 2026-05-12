@@ -25,19 +25,49 @@ func main() {
 
     // Rotas Públicas
     r.POST("/login", handlers.Login)
-    r.GET("/projects", handlers.GetProjects)
+ 
+	// Projetos e Patrocinadores (leitura pública)
+	r.GET("/projects", handlers.GetProjects)
 	r.GET("/sponsors", handlers.GetSponsors)
-
+ 
+	// Monitores e Alunos (leitura pública — o front usa para popular os selects)
+	r.GET("/monitors", handlers.GetMonitors)
+	r.GET("/alunos", handlers.GetAlunos)
+ 
+	// Grade semanal (leitura pública — exibida no painel)
+	r.GET("/alocacoes", handlers.GetAlocacoes)
+ 
+	// Chamadas (leitura pública — para consulta)
+	r.GET("/chamadas", handlers.GetChamadas)
 	
-	// Grupo Admin
+	// Grupo Admin (JWT)
 	admin := r.Group("/admin")
-	admin.Use(middlewares.AuthMiddleware()) 
+	admin.Use(middlewares.AuthMiddleware())
 	{
+		// Projetos
 		admin.POST("/projects", handlers.CreateProject)
+		admin.PUT("/projects/:id", handlers.UpdateProject)
 		admin.DELETE("/projects/:id", handlers.DeleteProject)
+ 
+		// Patrocinadores
 		admin.POST("/sponsors", handlers.CreateSponsor)
 		admin.DELETE("/sponsors/:id", handlers.DeleteSponsor)
+ 
+		// Importação de monitores via CSV
+		admin.POST("/monitors/import", handlers.ImportMonitors)
+ 
+		// Importação de alunos via CSV
+		admin.POST("/alunos/import", handlers.ImportAlunos)
+ 
+		// Grade semanal de salas
+		admin.POST("/alocacoes", handlers.SaveAlocacao)
+		admin.POST("/alocacoes/bulk", handlers.SaveAlocacoesBulk)
+		admin.DELETE("/alocacoes/reset", handlers.ResetAlocacoes)
+ 
+		// Chamada do dia
+		admin.POST("/chamadas/bulk", handlers.SaveChamadaBulk)
 	}
+
 
 	r.Run(":8080")
 }
