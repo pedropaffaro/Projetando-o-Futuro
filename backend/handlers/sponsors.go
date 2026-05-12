@@ -56,6 +56,6 @@ func DeleteSponsor(c *gin.Context) {
         os.Remove(sponsor.Logo)
     }
 
-    database.DB.Delete(&sponsor)
+    database.DB.Unscoped().Delete(&sponsor)
     c.JSON(http.StatusOK, gin.H{"message": "Patrocinador excluído com sucesso"})
 }
