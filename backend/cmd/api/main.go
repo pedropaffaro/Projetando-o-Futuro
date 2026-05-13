@@ -22,23 +22,12 @@ func main() {
 	}))
 
 	r.Static("/uploads", "./uploads")
-
     // Rotas Públicas
     r.POST("/login", handlers.Login)
  
 	// Projetos e Patrocinadores (leitura pública)
 	r.GET("/projects", handlers.GetProjects)
 	r.GET("/sponsors", handlers.GetSponsors)
- 
-	// Monitores e Alunos (leitura pública — o front usa para popular os selects)
-	r.GET("/monitors", handlers.GetMonitors)
-	r.GET("/alunos", handlers.GetAlunos)
- 
-	// Grade semanal (leitura pública — exibida no painel)
-	r.GET("/alocacoes", handlers.GetAlocacoes)
- 
-	// Chamadas (leitura pública — para consulta)
-	r.GET("/chamadas", handlers.GetChamadas)
 	
 	// Grupo Admin (JWT)
 	admin := r.Group("/admin")
@@ -55,17 +44,25 @@ func main() {
  
 		// Importação de monitores via CSV
 		admin.POST("/monitors/import", handlers.ImportMonitors)
- 
+		// Monitores (o front usa para popular os selects)
+		admin.GET("/monitors", handlers.GetMonitors)
+		
 		// Importação de alunos via CSV
 		admin.POST("/alunos/import", handlers.ImportAlunos)
- 
+ 		// Alunos (o front usa para popular os selects)
+		admin.GET("/alunos", handlers.GetAlunos)
+
 		// Grade semanal de salas
 		admin.POST("/alocacoes", handlers.SaveAlocacao)
 		admin.POST("/alocacoes/bulk", handlers.SaveAlocacoesBulk)
 		admin.DELETE("/alocacoes/reset", handlers.ResetAlocacoes)
+		// Grade semanal (leitura — exibida no painel)
+		admin.GET("/alocacoes", handlers.GetAlocacoes)
  
 		// Chamada do dia
 		admin.POST("/chamadas/bulk", handlers.SaveChamadaBulk)
+		// Chamadas (leitura para consulta)
+		admin.GET("/chamadas", handlers.GetChamadas)
 	}
 
 

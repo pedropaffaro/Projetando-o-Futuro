@@ -14,17 +14,66 @@ function Dashboard() {
   // 1. Estados para armazenar os dados de projetos e patrocinadores
   const [projects, setProjects] = useState<any[]>([]);
   const [sponsors, setSponsors] = useState<any[]>([]);
+  const [volunteers, setVolunteers] = useState<any[]>([])
+  const [students, setStudents] = useState<any[]>([])
+
+  // como são funções que alteram valores de useEffect globais do overview, 
+  // deve-se criar instancias separadas para serem chamadas via props que n dependam de activetab
+  const fetchVolunteersData = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const resVoluteers = await fetch("http://localhost:8080/admin/monitors", {
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      });
+      if(resVoluteers.ok){
+        const dataVolunteers = await resVoluteers.json()
+        setVolunteers(dataVolunteers)
+      }
+    } catch(error){
+      console.error("Erro ao buscar dados para os voluntários:", error)
+    }
+  }
+
+  const fetchStudentsData = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const resStudents = await fetch("http://localhost:8080/admin/alunos", {
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      });
+      if(resStudents.ok){
+        const dataStudents = await resStudents.json()
+        setStudents(dataStudents)
+      }
+    } catch(error){
+      console.error("Erro ao buscar dados para os alunos:", error)
+    }
+  }
 
   // 2. Busca os dados da API sempre que a aba ativa for a "overview"
   useEffect(() => {
     if (activeTab === "overview") {
       const fetchDashboardData = async () => {
         try {
-          // Promise.all permite fazer as duas requisições ao mesmo tempo, 
+          const token = localStorage.getItem("token");
+          // Promise.all permite fazer as três requisições ao mesmo tempo, 
           // deixando o carregamento mais rápido!
-          const [resProjects, resSponsors] = await Promise.all([
+          const [resProjects, resSponsors, resVolunteers, resStudents] = await Promise.all([
             fetch("http://localhost:8080/projects"),
-            fetch("http://localhost:8080/sponsors")
+            fetch("http://localhost:8080/sponsors"),
+            fetch("http://localhost:8080/admin/monitors", {
+              headers: {
+                "Authorization": `Bearer ${token}`
+              }
+            }),
+            fetch("http://localhost:8080/admin/alunos", {
+              headers: {
+                "Authorization": `Bearer ${token}`
+              }
+            })
           ]);
 
           if (resProjects.ok) {
@@ -36,12 +85,31 @@ function Dashboard() {
             const dataSponsors = await resSponsors.json();
             setSponsors(dataSponsors);
           }
+
+          if (resVolunteers.ok) {
+            const dataVolunteers = await resVolunteers.json();
+            setVolunteers(dataVolunteers);
+          }
+
+          if (resStudents.ok) {
+            const dataStudents = await resStudents.json();
+            setStudents(dataStudents);
+          }
+
         } catch (error) {
           console.error("Erro ao buscar dados para o dashboard:", error);
         }
       };
 
       fetchDashboardData();
+    } 
+    
+    else if(activeTab === "rooms"){
+      fetchVolunteersData()
+    }
+
+    else if(activeTab === "attendance"){
+      fetchStudentsData()
     }
   }, [activeTab]); // A dependência garante que o fetch ocorra ao mudar de aba
 
@@ -160,12 +228,13 @@ function Dashboard() {
               onNavigate={setActiveTab} 
               projects={projects} 
               sponsors={sponsors} 
+              volunteers={volunteers}
             />
           )}
           {activeTab === "volunteers" && <ManageVolunteers />}
           {activeTab === "childs" && <ManageChilds />}
-          {activeTab === "attendance" && <ManageAttendance />}
-          {activeTab === "rooms" && <ManageRooms />}
+          {activeTab === "attendance" && <ManageAttendance lista={students} onUpdateLista={fetchStudentsData}/>}
+          {activeTab === "rooms" && <ManageRooms lista={volunteers} onUpdateLista={fetchVolunteersData} />}
           {activeTab === "projects" && <ManageProjects />}
           {activeTab === "sponsors" && <ManageSponsors />}
         </main>

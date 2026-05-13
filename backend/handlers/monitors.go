@@ -65,6 +65,9 @@ func ImportMonitors(c *gin.Context) {
 	imported := 0
 	updated := 0
 
+	// essa linha faz com que cada import de csv na realidade resete totalmente os monitores disponiveis
+	database.DB.Exec("DELETE FROM monitors")
+
 	for {
 		row, err := reader.Read()
 		if err == io.EOF {

@@ -3,16 +3,20 @@ interface OverviewProps {
   onNavigate: (tab: string) => void;
   projects?: any[];
   sponsors?: any[];
+  volunteers?: any[];
+  students?: any[];
 }
 
-function Overview({ onNavigate, projects = [], sponsors = [] }: OverviewProps) {
+function Overview({ onNavigate, projects = [], sponsors = [], volunteers = [], students = [] }: OverviewProps) {
   const totalProjects = String(projects.length).padStart(2, "0");
   const totalSponsors = String(sponsors.length).padStart(2, "0");
+  const totalVolunteers = String(volunteers.length).padStart(2, "0");
+  const totalStudents = String(students.length).padStart(2, "0");
 
-  // função da tela interna com dados dummy
+  // função da tela interna com dados dummy ou vindos da base
   const stats = [
-    { label: "Jovens Atendidos", value: "142", color: "bg-green-primary" },
-    { label: "Voluntários Ativos", value: "38", color: "bg-yellow-400" },
+    { label: "Jovens Atendidos", value: totalStudents, color: "bg-green-primary" },
+    { label: "Voluntários Ativos", value: totalVolunteers, color: "bg-yellow-400" },
     {
       label: "Projetos Atuais",
       value: totalProjects,

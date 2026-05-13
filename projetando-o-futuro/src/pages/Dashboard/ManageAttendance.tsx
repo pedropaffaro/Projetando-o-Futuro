@@ -1,55 +1,22 @@
 import { useState } from "react";
 
+interface ManageAttendanceProps {
+  lista: any[];
+  onUpdateLista?: () => void;
+}
 
-// turmas dummy de exemplo
-const TURMAS = [
-  {
-    id: 1,
-    nome: "Turma 1",
-    color: "bg-purple-primary",
-    alunos: [
-      { id: 1, nome: "Allan" },
-      { id: 2, nome: "Valéria" },
-      { id: 3, nome: "Lucas" },
-    ],
-  },
-  {
-    id: 2,
-    nome: "Turma 2",
-    color: "bg-green-secondary",
-    alunos: [
-      { id: 4, nome: "Ana Júlia" },
-      { id: 5, nome: "Nayla" },
-      { id: 6, nome: "Felipe" },
-    ],
-  },
-  {
-    id: 3,
-    nome: "Turma 3",
-    color: "bg-orange-primary",
-    alunos: [
-      { id: 7, nome: "Pedro" },
-      { id: 8, nome: "Castro" },
-      { id: 9, nome: "Leide" },
-    ],
-  },
-  {
-    id: 4,
-    nome: "Turma 4",
-    color: "bg-green-primary",
-    alunos: [
-      { id: 10, nome: "Beatriz" },
-      { id: 11, nome: "Johnny" },
-      { id: 12, nome: "Arlen" },
-    ],
-  },
+const TURMAS_BASE = [
+  { id: 1, nome: "Turma 1", color: "bg-purple-primary" },
+  { id: 2, nome: "Turma 2", color: "bg-green-secondary" },
+  { id: 3, nome: "Turma 3", color: "bg-orange-primary" },
+  { id: 4, nome: "Turma 4", color: "bg-green-primary" },
 ];
 
 // tipo presença tem uma quantidade referente a um tipo
 type Presenca = Record<number, "presente" | "falta" | "justificado" | null>;
 
-function ManageAttendance() {
-
+function ManageAttendance({lista, onUpdateLista}: ManageAttendanceProps) {
+  
   // constroi a data de hoje
   const hoje = new Date().toLocaleDateString("pt-BR", {
     weekday: "long",
@@ -59,9 +26,12 @@ function ManageAttendance() {
   });
 
   // states de controle para gerir presença
-  const [turmaSelecionada, setTurmaSelecionada] = useState(TURMAS[0]);
+  const [turmaSelecionada, setTurmaSelecionada] = useState(TURMAS_BASE[0]);
   const [presenca, setPresenca] = useState<Presenca>({});
   const [salvo, setSalvo] = useState(false);
+
+  // Alunos da turma selecionada baseados na variavel lista vinda do DB
+  const alunosDaTurma = (lista || []).filter((a) => a.turma === turmaSelecionada.nome);
 
   // atribuição de presença
   const marcar = (alunoId: number, status: "presente" | "falta" | "justificado") => {
@@ -85,27 +55,96 @@ function ManageAttendance() {
   };
 
   // total de presentes
-  const totalPresentes = turmaSelecionada.alunos.filter(
-    (a) => presenca[a.id] === "presente"
+  const totalPresentes = alunosDaTurma.filter(
+    (a) => presenca[a.ID] === "presente"
   ).length;
 
   // total de faltas
-  const totalFaltas = turmaSelecionada.alunos.filter(
-    (a) => presenca[a.id] === "falta"
+  const totalFaltas = alunosDaTurma.filter(
+    (a) => presenca[a.ID] === "falta"
   ).length;
 
   // total de justificados
-  const totalJustificados = turmaSelecionada.alunos.filter(
-    (a) => presenca[a.id] === "justificado"
+  const totalJustificados = alunosDaTurma.filter(
+    (a) => presenca[a.ID] === "justificado"
   ).length;
 
   // quantidade total de alunos
-  const todosMarcados = turmaSelecionada.alunos.every(
-    (a) => presenca[a.id] !== null && presenca[a.id] !== undefined
+  const todosMarcados = alunosDaTurma.length > 0 && alunosDaTurma.every(
+    (a) => presenca[a.ID] !== null && presenca[a.ID] !== undefined
   );
+
+  // Estados para importação de CSV
+  const [csvFile, setCsvFile] = useState<File | null>(null);
+  const [csvStatus, setCsvStatus] = useState<{msg: string, isError: boolean} | null>(null);
+
+  const handleUploadCsv = async () => {
+    if (!csvFile) return;
+    
+    const formData = new FormData();
+    formData.append("csv", csvFile);
+
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://localhost:8080/admin/alunos/import", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`
+        },
+        body: formData,
+      });
+
+      if (response.ok) {
+        setCsvStatus({ msg: "CSV de Alunos importado com sucesso!", isError: false });
+        setCsvFile(null);
+        if (onUpdateLista) {
+          onUpdateLista(); // Avisa o Dashboard para refazer o fetch!
+        }
+      } else {
+        setCsvStatus({ msg: "Erro ao realizar a importação. Verifique se o formato do CSV está correto.", isError: true });
+      }
+    } catch (err) {
+      setCsvStatus({ msg: "Erro de rede ao se comunicar com a API.", isError: true });
+    }
+  };
 
   return (
     <div className="flex flex-col gap-8 max-w-5xl">
+      {/* Envio de CSV (Apenas Alunos aqui) */}
+      <section className="bg-white border-[3px] border-black p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+        <h2 className="text-2xl font-black uppercase text-black mb-2">Importar Alunos (CSV)</h2>
+        <p className="text-sm font-medium text-gray-600 mb-6">
+          Use este espaço para importar em lote a lista de Alunos no banco de dados.
+        </p>
+
+        <div className="flex flex-col md:flex-row gap-4 items-center">
+          <input
+            type="file"
+            accept=".csv"
+            onChange={(e) => setCsvFile(e.target.files?.[0] || null)}
+            className="flex-1 w-full text-black border-[3px] border-black file:mr-4 file:py-3 file:px-4 file:border-0 file:text-sm file:font-black file:uppercase file:bg-green-primary file:text-white hover:file:bg-black cursor-pointer"
+          />
+
+          <button
+            onClick={handleUploadCsv}
+            disabled={!csvFile}
+            className={`font-black uppercase px-6 py-3 border-[3px] border-black text-white transition-all ${
+              !csvFile
+                ? "bg-gray-300 border-gray-300 text-gray-500 cursor-not-allowed"
+                : "bg-orange-primary hover:bg-black cursor-pointer hover:-translate-y-1 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
+            }`}
+          >
+            Enviar
+          </button>
+        </div>
+
+        {csvStatus && (
+          <div className={`mt-6 font-extrabold uppercase px-5 py-3 border-[3px] border-black text-sm shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${csvStatus.isError ? "bg-red-500 text-white" : "bg-green-primary text-white"}`}>
+            {csvStatus.isError ? "⚠ " : "✓ "} {csvStatus.msg}
+          </div>
+        )}
+      </section>
+
       {/* Header com data */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
@@ -129,7 +168,7 @@ function ManageAttendance() {
         </p>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {/* reenderiza a seção das turmas */} 
-          {TURMAS.map((turma) => (
+          {TURMAS_BASE.map((turma) => (
             <button
               key={turma.id}
               onClick={() => {
@@ -159,7 +198,7 @@ function ManageAttendance() {
             {turmaSelecionada.nome}
           </h3>
           <span className="bg-white/20 text-white font-black uppercase text-xs px-3 py-1 border border-white/40">
-            {turmaSelecionada.alunos.length} alunos
+            {alunosDaTurma.length} alunos
           </span>
         </div>
 
@@ -181,13 +220,13 @@ function ManageAttendance() {
 
         {/* Lista de alunos */}
         <div className="flex flex-col">
-          {turmaSelecionada.alunos.map((aluno, index) => {
-            const status = presenca[aluno.id];
+          {alunosDaTurma.map((aluno, index) => {
+            const status = presenca[aluno.ID];
             return (
               <div
-                key={aluno.id}
+                key={aluno.ID}
                 className={`flex flex-col sm:flex-row sm:items-center justify-between px-6 py-4 gap-3
-                  ${index !== turmaSelecionada.alunos.length - 1 ? "border-b-[2px] border-black" : ""}
+                  ${index !== alunosDaTurma.length - 1 ? "border-b-[2px] border-black" : ""}
                   ${status === "presente" ? "bg-green-50" : ""}
                   ${status === "falta" ? "bg-red-50" : ""}
                   ${status === "justificado" ? "bg-yellow-50" : ""}
@@ -215,7 +254,7 @@ function ManageAttendance() {
 
                 <div className="flex gap-2">
                   <button
-                    onClick={() => marcar(aluno.id, "presente")}
+                    onClick={() => marcar(aluno.ID, "presente")}
                     className={`px-4 py-2 font-extrabold uppercase text-xs border-[2px] border-black transition-all cursor-pointer
                       ${
                         status === "presente"
@@ -226,7 +265,7 @@ function ManageAttendance() {
                     ✓ Presente
                   </button>
                   <button
-                    onClick={() => marcar(aluno.id, "falta")}
+                    onClick={() => marcar(aluno.ID, "falta")}
                     className={`px-4 py-2 font-extrabold uppercase text-xs border-[2px] border-black transition-all cursor-pointer
                       ${
                         status === "falta"
@@ -237,7 +276,7 @@ function ManageAttendance() {
                     ✗ Falta
                   </button>
                   <button
-                    onClick={() => marcar(aluno.id, "justificado")}
+                    onClick={() => marcar(aluno.ID, "justificado")}
                     className={`px-4 py-2 font-extrabold uppercase text-xs border-[2px] border-black transition-all cursor-pointer
                       ${
                         status === "justificado"

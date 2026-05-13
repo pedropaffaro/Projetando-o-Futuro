@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // dados dummy
 const SALAS = [
@@ -9,11 +9,8 @@ const SALAS = [
   { id: 5, nome: "Salão", color: "bg-yellow-400" },
 ];
 
-const MONITORES = [
-  "Allan", "Valéria", "Ana Júlia", "Nayla",
-  "Pedro", "Castro", "Beatriz", "Johnny",
-  "Arlen", "Arthur", "Leide", "Jaque",
-  "Vitória", "Ariadne", "Nina",
+const EMPTY = [
+  "Nenhum monitor disponível"
 ];
 
 const HORARIOS = [
@@ -38,6 +35,10 @@ interface Alocacao {
   salaId: number | null;
 }
 
+interface ManageRoomsProps {
+  lista: any[];
+  onUpdateLista?: () => void;
+}
 
 type Grade = Record<string, Alocacao>; // key = `${horarioId}-${turmaIndex}`
 
@@ -65,11 +66,54 @@ function getTurmaConflito(
   return null;
 }
 
-function ManageRooms() {
+function ManageRooms({lista, onUpdateLista}: ManageRoomsProps) {
   const [grade, setGrade] = useState<Grade>(criarGradeInicial());
   const [salvo, setSalvo] = useState(false);
   // conflitos ativos: set de keys com erro
   const [conflitos, setConflitos] = useState<Set<string>>(new Set());
+  
+  // Lista vinda da API é um array de objetos
+  // Garantimos que seja um array e mapeamos para facilitar, senão usamos fallback se estiver vazio
+  let monitoresDisponiveis = (lista && lista.length > 0) ? lista : EMPTY;
+  
+  useEffect(()=>{
+    monitoresDisponiveis = (lista && lista.length > 0) ? lista : EMPTY;
+  }, [lista])
+
+  // Estados para importação de CSV
+  const [csvFile, setCsvFile] = useState<File | null>(null);
+  const [csvStatus, setCsvStatus] = useState<{msg: string, isError: boolean} | null>(null);
+
+  const handleUploadCsv = async () => {
+    if (!csvFile) return;
+    
+    const formData = new FormData();
+    formData.append("csv", csvFile);
+
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await fetch("http://localhost:8080/admin/monitors/import", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`
+        },
+        body: formData,
+      });
+
+      if (response.ok) {
+        setCsvStatus({ msg: "CSV de Voluntários importado com sucesso!", isError: false });
+        setCsvFile(null);
+        if (onUpdateLista) {
+          onUpdateLista(); // Avisa o Dashboard para refazer o fetch!
+        }
+      } else {
+        setCsvStatus({ msg: "Erro ao realizar a importação. Verifique se o formato do CSV está correto.", isError: true });
+      }
+    } catch (err) {
+      setCsvStatus({ msg: "Erro de rede ao se comunicar com a API.", isError: true });
+    }
+  };
 
   const atualizar = (
     horarioId: number,
@@ -141,6 +185,42 @@ function ManageRooms() {
 
   return (
     <div className="flex flex-col gap-8">
+      {/* Envio de CSV (Apenas Voluntários aqui) */}
+      <section className="bg-white border-[3px] border-black p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+        <h2 className="text-2xl font-black uppercase text-black mb-2">Importar Voluntários (CSV)</h2>
+        <p className="text-sm font-medium text-gray-600 mb-6">
+          Use este espaço para importar em lote a lista de Voluntários no banco de dados. <br/>
+          O formato da tabela deve ser extritamente em .CSV com o cabeçalho definido como (nome do voluntario,apelido,origem do educador)
+        </p>
+
+        <div className="flex flex-col md:flex-row gap-4 items-center">
+          <input
+            type="file"
+            accept=".csv"
+            onChange={(e) => setCsvFile(e.target.files?.[0] || null)}
+            className="flex-1 w-full text-black border-[3px] border-black file:mr-4 file:py-3 file:px-4 file:border-0 file:text-sm file:font-black file:uppercase file:bg-green-primary file:text-white hover:file:bg-black cursor-pointer"
+          />
+
+          <button
+            onClick={handleUploadCsv}
+            disabled={!csvFile}
+            className={`font-black uppercase px-6 py-3 border-[3px] border-black text-white transition-all ${
+              !csvFile
+                ? "bg-gray-300 border-gray-300 text-gray-500 cursor-not-allowed"
+                : "bg-orange-primary hover:bg-black cursor-pointer hover:-translate-y-1 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
+            }`}
+          >
+            Enviar
+          </button>
+        </div>
+
+        {csvStatus && (
+          <div className={`mt-6 font-extrabold uppercase px-5 py-3 border-[3px] border-black text-sm shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${csvStatus.isError ? "bg-red-500 text-white" : "bg-green-primary text-white"}`}>
+            {csvStatus.isError ? "⚠ " : "✓ "} {csvStatus.msg}
+          </div>
+        )}
+      </section>
+
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
@@ -235,11 +315,15 @@ function ManageRooms() {
                               className="w-full border-[2px] border-black px-2 py-1.5 text-xs font-bold bg-white focus:outline-none appearance-none cursor-pointer"
                             >
                               <option value="">—</option>
-                              {MONITORES.map((m) => (
-                                <option key={m} value={m}>
-                                  {m}
-                                </option>
-                              ))}
+                              {monitoresDisponiveis.map((m: any) => {
+                                const mNome = m.apelido || m; // fallback se for a string mockada
+                                const isDisable = monitoresDisponiveis === EMPTY;
+                                return (
+                                  <option key={mNome} value={mNome} disabled={isDisable}>
+                                    {mNome}
+                                  </option>
+                                );
+                              })}
                             </select>
                           </td>
                         );
