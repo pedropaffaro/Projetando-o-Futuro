@@ -74,11 +74,13 @@ function ManageRooms({lista, onUpdateLista}: ManageRoomsProps) {
   
   // Lista vinda da API é um array de objetos
   // Garantimos que seja um array e mapeamos para facilitar, senão usamos fallback se estiver vazio
-  let monitoresDisponiveis = (lista && lista.length > 0) ? lista : EMPTY;
+  const [monitoresDisponiveis, setMonitoresDisponiveis] = useState(
+    lista && lista.length > 0 ? lista : EMPTY
+  );
   
-  useEffect(()=>{
-    monitoresDisponiveis = (lista && lista.length > 0) ? lista : EMPTY;
-  }, [lista])
+  useEffect(() => {
+    setMonitoresDisponiveis(lista && lista.length > 0 ? lista : EMPTY);
+  }, [lista]);
 
   // Estados para importação de CSV
   const [csvFile, setCsvFile] = useState<File | null>(null);
@@ -175,10 +177,41 @@ function ManageRooms({lista, onUpdateLista}: ManageRoomsProps) {
     }));
   };
 
-  const handleSalvar = () => {
-    if (conflitos.size > 0) return;
-    console.log("Grade salva:", grade);
-    setSalvo(true);
+  const handleSalvar = async () => {
+    if(conflitos.size > 0) return;
+
+    const token = localStorage.getItem("token");
+
+    const payload = Object.entries(grade).map(([key, alocacao]) => {
+      const [horarioId, turmaIndex] = key.split("-").map(Number);
+      return {
+        turma: TURMAS_BASE[turmaIndex],
+        horarioId,
+        monitorA: alocacao.monitorA,
+        monitorB: alocacao.monitorB,
+        salaId: alocacao.salaId ?? 0,
+        salaNome: SALAS.find((s) => s.id === alocacao.salaId)?.nome ?? ""
+      };
+    });
+
+    try{
+      const res = await fetch("http://localhost:8080/admin/alocacoes/bulk", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if(res.ok){
+        setSalvo(true);
+      } else {
+        alert("Erro ao salvar grade");
+      }
+    } catch (err){
+      alert("Erro de rede");
+    }
   };
 
   const temConflitos = conflitos.size > 0;
