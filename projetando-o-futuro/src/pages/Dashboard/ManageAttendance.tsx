@@ -45,13 +45,38 @@ function ManageAttendance({lista, onUpdateLista}: ManageAttendanceProps) {
   };
 
   // atualiza o state de presença salva
-  const handleSalvar = () => {
-    console.log("Chamada salva:", {
-      turma: turmaSelecionada.nome,
-      data: new Date().toISOString(),
-      presenca,
-    });
-    setSalvo(true);
+  const handleSalvar = async () => {
+    const token = localStorage.getItem("token");
+    const dataHoje = new Date().toISOString().split("T")[0];
+
+    const registros = alunosDaTurma.map((aluno) => ({
+      alunoId: aluno.ID,
+      alunoNome: aluno.nome,
+      status: presenca[aluno.ID]
+    }));
+
+    try {
+      const res = await fetch("http://localhost:8080/admin/chamadas/bulk", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          data: dataHoje,
+          turma: turmaSelecionada.nome,
+          registros
+        }),
+      });
+
+      if(res.ok){
+        setSalvo(true);
+      } else {
+        alert("Erro ao salvar chamada");
+      }
+    } catch(err){
+      alert("Erro de rede");
+    }
   };
 
   // total de presentes
