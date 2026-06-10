@@ -150,7 +150,7 @@ function Home() {
                   Preparação Jovem
                 </h3>
                 <p className="text-xl md:text-2xl font-medium leading-snug">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                  Oferecemos reforço escolar e oficinas profissionalizantes para jovens em situação de vulnerabilidade, preparando-os para o mercado de trabalho e para os desafios do dia a dia.
                 </p>
               </div>
               <div className="w-full md:w-1/2 flex flex-col items-center justify-center py-12 px-6 bg-white border-[3px] border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] transition-all duration-300">
@@ -170,7 +170,7 @@ function Home() {
                   Cidadania para todos
                 </h3>
                 <p className="text-xl md:text-2xl font-medium leading-snug md:text-right">
-                  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                  Trabalhamos valores como ética, solidariedade e inteligência emocional, formando cidadãos conscientes e comprometidos com a transformação da nossa sociedade.
                 </p>
               </div>
               <div className="w-full md:w-1/2 flex flex-col items-center justify-center py-12 px-6 bg-black border-[3px] border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] transition-all duration-300 text-white">
@@ -190,7 +190,7 @@ function Home() {
                   Mobilização Social
                 </h3>
                 <p className="text-xl md:text-2xl font-medium leading-snug">
-                  Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida.
+                  Contamos com o apoio de instituições parceiras, empresas e voluntários que acreditam no poder da educação para mudar destinos e construir um futuro melhor.
                 </p>
               </div>
               <div className="w-full md:w-1/2 flex flex-col items-center justify-center py-12 px-6 bg-white border-[3px] border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] transition-all duration-300">
