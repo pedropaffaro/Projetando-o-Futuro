@@ -1,27 +1,44 @@
 package database
 
 import (
-    "log"
+	"fmt"
+	"log"
+	"os"
 
-    "github.com/pedropaffaro/projetando-o-futuro-back/models"
-    "golang.org/x/crypto/bcrypt"
-    "gorm.io/driver/postgres"
-    "gorm.io/gorm"
+	"github.com/joho/godotenv"
+	"github.com/pedropaffaro/projetando-o-futuro-back/models"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 var DB *gorm.DB
 
 func InitDB() {
+	// Carrega as variáveis do arquivo .env
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("Aviso: Arquivo .env não encontrado. Usando variáveis de ambiente do sistema.")
+	}
 
-    dsn := "host=localhost user=admin password=admin123 dbname=projetando_futuro port=5433 sslmode=disable"
-    
-    database, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-    if err != nil {
-        log.Fatal("Falha ao conectar no banco de dados do Docker:", err)
-    }
-    
-    // Cria/atualiza as tabelas automaticamente
-	database.AutoMigrate(
+	// Busca as variáveis protegidas
+	host := os.Getenv("DB_HOST")
+	port := os.Getenv("DB_PORT")
+	user := os.Getenv("DB_USER")
+	password := os.Getenv("DB_PASSWORD")
+	dbname := os.Getenv("DB_NAME")
+
+	// Monta a string de conexão de forma dinâmica e limpa
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable", 
+		host, user, password, dbname, port,
+	)
+	
+	database, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if err != nil {
+		log.Fatal("Falha ao conectar no banco de dados do Docker: ", err)
+	}
+	
+	// Migrations
+	err = database.AutoMigrate(
 		&models.Project{},
 		&models.Sponsor{},
 		&models.User{},
@@ -30,15 +47,9 @@ func InitDB() {
 		&models.Alocacao{},
 		&models.Chamada{},
 	)
+	if err != nil {
+		log.Fatal("Falha ao rodar as Migrations: ", err)
+	}
 
-    // Criar admin padrão se não existir
-    var count int64
-    database.Model(&models.User{}).Count(&count)
-    if count == 0 {
-        hash, _ := bcrypt.GenerateFromPassword([]byte("admin123"), 10)
-        admin := models.User{Username: "admin", Password: string(hash)}
-        database.Create(&admin)
-    }
-
-    DB = database
+	DB = database
 }

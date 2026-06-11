@@ -6,6 +6,8 @@ No primeiro, rode:
 
 ```bash
 cd backend
+docker compose up -d
+docker ps
 go run cmd/api/main.go
 ```
 
