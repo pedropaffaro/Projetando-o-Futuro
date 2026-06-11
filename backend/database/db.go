@@ -1,16 +1,24 @@
 package database
 
 import (
+    "log"
+
     "github.com/pedropaffaro/projetando-o-futuro-back/models"
     "golang.org/x/crypto/bcrypt"
-    "gorm.io/driver/sqlite"
+    "gorm.io/driver/postgres"
     "gorm.io/gorm"
 )
 
 var DB *gorm.DB
 
 func InitDB() {
-    database, _ := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+
+    dsn := "host=localhost user=admin password=admin123 dbname=projetando_futuro port=5433 sslmode=disable"
+    
+    database, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+    if err != nil {
+        log.Fatal("Falha ao conectar no banco de dados do Docker:", err)
+    }
     
     // Cria/atualiza as tabelas automaticamente
 	database.AutoMigrate(
@@ -22,7 +30,6 @@ func InitDB() {
 		&models.Alocacao{},
 		&models.Chamada{},
 	)
-
 
     // Criar admin padrão se não existir
     var count int64
