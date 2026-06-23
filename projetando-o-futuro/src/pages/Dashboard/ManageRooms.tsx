@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react"; // Importado React para usar o React.Fragment
 
-// dados dummy
 const SALAS = [
   { id: 1, nome: "Sala Janela", color: "bg-purple-primary" },
   { id: 2, nome: "Sala TV", color: "bg-green-secondary" },
@@ -9,9 +8,7 @@ const SALAS = [
   { id: 5, nome: "Salão", color: "bg-yellow-400" },
 ];
 
-const EMPTY = [
-  "Nenhum monitor disponível"
-];
+const EMPTY = ["Nenhum monitor disponível"];
 
 const HORARIOS = [
   { id: 1, label: "10:30 - 12:00" },
@@ -28,7 +25,6 @@ const TURMA_COLORS = [
   "bg-green-primary",
 ];
 
-// uma alocação tem os tipos:
 interface Alocacao {
   monitorA: string;
   monitorB: string;
@@ -40,11 +36,11 @@ interface ManageRoomsProps {
   onUpdateLista?: () => void;
 }
 
-type Grade = Record<string, Alocacao>; // key = `${horarioId}-${turmaIndex}`
+type Grade = Record<string, Alocacao>;
 
 function criarGradeInicial(): Grade {
   const grade: Grade = {};
-  HORARIOS.forEach((h) => { // gera um valor default para cada sala em cada horario
+  HORARIOS.forEach((h) => {
     TURMAS_BASE.forEach((_, ti) => {
       grade[`${h.id}-${ti}`] = { monitorA: "", monitorB: "", salaId: null };
     });
@@ -52,7 +48,6 @@ function criarGradeInicial(): Grade {
   return grade;
 }
 
-// Retorna o índice da outra turma que já ocupa essa sala no mesmo horário, ou null
 function getTurmaConflito(
   grade: Grade,
   horarioId: number,
@@ -66,54 +61,110 @@ function getTurmaConflito(
   return null;
 }
 
-function ManageRooms({lista, onUpdateLista}: ManageRoomsProps) {
+function ManageRooms({ lista, onUpdateLista }: ManageRoomsProps) {
   const [grade, setGrade] = useState<Grade>(criarGradeInicial());
   const [salvo, setSalvo] = useState(false);
-  // conflitos ativos: set de keys com erro
   const [conflitos, setConflitos] = useState<Set<string>>(new Set());
-  
-  // Lista vinda da API é um array de objetos
-  // Garantimos que seja um array e mapeamos para facilitar, senão usamos fallback se estiver vazio
+
   const [monitoresDisponiveis, setMonitoresDisponiveis] = useState(
     lista && lista.length > 0 ? lista : EMPTY
   );
-  
+
   useEffect(() => {
     setMonitoresDisponiveis(lista && lista.length > 0 ? lista : EMPTY);
   }, [lista]);
 
-  // Estados para importação de CSV
+  useEffect(() => {
+    const carregarGradeSalva = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        // Adicionamos o Header de Autenticação por segurança
+        const response = await fetch("http://localhost:8080/admin/alocacoes", {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data.alocacoes && data.alocacoes.length > 0) {
+            const gradeDoBanco = criarGradeInicial();
+
+            data.alocacoes.forEach((aloc: any) => {
+              // Correção principal: garante que vai ler "turma" ou "Turma"
+              const turmaNome = aloc.turma ?? aloc.Turma ?? "";
+              const turmaIndex = TURMAS_BASE.indexOf(turmaNome);
+
+              if (turmaIndex !== -1) {
+                const horarioId =
+                  aloc.horarioId ?? aloc.horario_id ?? aloc.HorarioID;
+                const monitorA =
+                  aloc.monitorA ?? aloc.monitor_a ?? aloc.MonitorA ?? "";
+                const monitorB =
+                  aloc.monitorB ?? aloc.monitor_b ?? aloc.MonitorB ?? "";
+                const salaId =
+                  aloc.salaId ?? aloc.sala_id ?? aloc.SalaID ?? null;
+
+                const key = `${horarioId}-${turmaIndex}`;
+                gradeDoBanco[key] = {
+                  monitorA: monitorA,
+                  monitorB: monitorB,
+                  salaId: salaId === 0 ? null : salaId,
+                };
+              } else {
+                // Se cair aqui, a string da turma que veio do banco não bateu com o TURMAS_BASE
+                console.warn("Turma não identificada na base:", aloc);
+              }
+            });
+            setGrade(gradeDoBanco);
+          }
+        }
+      } catch (err) {
+        console.error("Erro ao carregar alocações antigas:", err);
+      }
+    };
+
+    carregarGradeSalva();
+  }, []);
+
   const [csvFile, setCsvFile] = useState<File | null>(null);
-  const [csvStatus, setCsvStatus] = useState<{msg: string, isError: boolean} | null>(null);
+  const [csvStatus, setCsvStatus] = useState<{
+    msg: string;
+    isError: boolean;
+  } | null>(null);
 
   const handleUploadCsv = async () => {
     if (!csvFile) return;
-    
     const formData = new FormData();
     formData.append("csv", csvFile);
 
     try {
       const token = localStorage.getItem("token");
-
-      const response = await fetch("http://localhost:8080/admin/monitors/import", {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${token}`
-        },
-        body: formData,
-      });
+      const response = await fetch(
+        "http://localhost:8080/admin/monitors/import",
+        {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` },
+          body: formData,
+        }
+      );
 
       if (response.ok) {
-        setCsvStatus({ msg: "CSV de Voluntários importado com sucesso!", isError: false });
+        setCsvStatus({
+          msg: "CSV de Voluntários importado com sucesso!",
+          isError: false,
+        });
         setCsvFile(null);
-        if (onUpdateLista) {
-          onUpdateLista(); // Avisa o Dashboard para refazer o fetch!
-        }
+        if (onUpdateLista) onUpdateLista();
       } else {
-        setCsvStatus({ msg: "Erro ao realizar a importação. Verifique se o formato do CSV está correto.", isError: true });
+        setCsvStatus({
+          msg: "Erro ao realizar a importação. Verifique se o formato do CSV está correto.",
+          isError: true,
+        });
       }
     } catch (err) {
-      setCsvStatus({ msg: "Erro de rede ao se comunicar com a API.", isError: true });
+      setCsvStatus({
+        msg: "Erro de rede ao se comunicar com a API.",
+        isError: true,
+      });
     }
   };
 
@@ -130,16 +181,19 @@ function ManageRooms({lista, onUpdateLista}: ManageRoomsProps) {
       const novaSalaId = valor as number | null;
 
       if (novaSalaId !== null) {
-        const conflito = getTurmaConflito(grade, horarioId, turmaIndex, novaSalaId);
+        const conflito = getTurmaConflito(
+          grade,
+          horarioId,
+          turmaIndex,
+          novaSalaId
+        );
         if (conflito !== null) {
-          // Marca conflito nos dois envolvidos
           setConflitos((prev) => {
             const next = new Set(prev);
             next.add(key);
             next.add(`${horarioId}-${conflito}`);
             return next;
           });
-          // Aplica mesmo assim para mostrar o conflito visualmente
           setGrade((prev) => ({
             ...prev,
             [key]: { ...prev[key], salaId: novaSalaId },
@@ -148,11 +202,9 @@ function ManageRooms({lista, onUpdateLista}: ManageRoomsProps) {
         }
       }
 
-      // Sem conflito — limpa conflito desta célula se havia
       setConflitos((prev) => {
         const next = new Set(prev);
         next.delete(key);
-        // Também verifica se a célula que antes conflitava com esta agora está ok
         TURMAS_BASE.forEach((_, ti) => {
           if (ti === turmaIndex) return;
           const otherKey = `${horarioId}-${ti}`;
@@ -178,8 +230,7 @@ function ManageRooms({lista, onUpdateLista}: ManageRoomsProps) {
   };
 
   const handleSalvar = async () => {
-    if(conflitos.size > 0) return;
-
+    if (conflitos.size > 0) return;
     const token = localStorage.getItem("token");
 
     const payload = Object.entries(grade).map(([key, alocacao]) => {
@@ -190,26 +241,26 @@ function ManageRooms({lista, onUpdateLista}: ManageRoomsProps) {
         monitorA: alocacao.monitorA,
         monitorB: alocacao.monitorB,
         salaId: alocacao.salaId ?? 0,
-        salaNome: SALAS.find((s) => s.id === alocacao.salaId)?.nome ?? ""
+        salaNome: SALAS.find((s) => s.id === alocacao.salaId)?.nome ?? "",
       };
     });
 
-    try{
+    try {
       const res = await fetch("http://localhost:8080/admin/alocacoes/bulk", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       });
 
-      if(res.ok){
+      if (res.ok) {
         setSalvo(true);
       } else {
         alert("Erro ao salvar grade");
       }
-    } catch (err){
+    } catch (err) {
       alert("Erro de rede");
     }
   };
@@ -218,12 +269,16 @@ function ManageRooms({lista, onUpdateLista}: ManageRoomsProps) {
 
   return (
     <div className="flex flex-col gap-8">
-      {/* Envio de CSV (Apenas Voluntários aqui) */}
+      {/* Envio de CSV */}
       <section className="bg-white border-[3px] border-black p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-        <h2 className="text-2xl font-black uppercase text-black mb-2">Importar Voluntários (CSV)</h2>
+        <h2 className="text-2xl font-black uppercase text-black mb-2">
+          Importar Voluntários (CSV)
+        </h2>
         <p className="text-sm font-medium text-gray-600 mb-6">
-          Use este espaço para importar em lote a lista de Voluntários no banco de dados. <br/>
-          O formato da tabela deve ser extritamente em .CSV com o cabeçalho definido como (nome do voluntario,apelido,origem do educador)
+          Use este espaço para importar em lote a lista de Voluntários no banco
+          de dados. <br />O formato da tabela deve ser estritamente em .CSV com
+          o cabeçalho definido como (nome do voluntario,apelido,origem do
+          educador)
         </p>
 
         <div className="flex flex-col md:flex-row gap-4 items-center">
@@ -233,7 +288,6 @@ function ManageRooms({lista, onUpdateLista}: ManageRoomsProps) {
             onChange={(e) => setCsvFile(e.target.files?.[0] || null)}
             className="flex-1 w-full text-black border-[3px] border-black file:mr-4 file:py-3 file:px-4 file:border-0 file:text-sm file:font-black file:uppercase file:bg-green-primary file:text-white hover:file:bg-black cursor-pointer"
           />
-
           <button
             onClick={handleUploadCsv}
             disabled={!csvFile}
@@ -248,7 +302,13 @@ function ManageRooms({lista, onUpdateLista}: ManageRoomsProps) {
         </div>
 
         {csvStatus && (
-          <div className={`mt-6 font-extrabold uppercase px-5 py-3 border-[3px] border-black text-sm shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${csvStatus.isError ? "bg-red-500 text-white" : "bg-green-primary text-white"}`}>
+          <div
+            className={`mt-6 font-extrabold uppercase px-5 py-3 border-[3px] border-black text-sm shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${
+              csvStatus.isError
+                ? "bg-red-500 text-white"
+                : "bg-green-primary text-white"
+            }`}
+          >
             {csvStatus.isError ? "⚠ " : "✓ "} {csvStatus.msg}
           </div>
         )}
@@ -314,8 +374,8 @@ function ManageRooms({lista, onUpdateLista}: ManageRoomsProps) {
 
           <tbody>
             {HORARIOS.map((horario, hi) => (
-              <>
-                {/* Linhas de monitores A e B */}
+              /* ✨ CORRIGIDO: Substituído <> por React.Fragment com key correspondente */
+              <React.Fragment key={horario.id}>
                 {[0, 1].map((monitorSlot) => {
                   const campo = monitorSlot === 0 ? "monitorA" : "monitorB";
                   const isFirst = monitorSlot === 0;
@@ -338,7 +398,9 @@ function ManageRooms({lista, onUpdateLista}: ManageRoomsProps) {
                         return (
                           <td
                             key={ti}
-                            className={`border-r-[3px] last:border-r-0 ${isLast ? "border-b-[1px]" : "border-b-[1px]"} border-black px-2 py-2`}
+                            className={`border-r-[3px] last:border-r-0 ${
+                              isLast ? "border-b-[1px]" : "border-b-[1px]"
+                            } border-black px-2 py-2`}
                           >
                             <select
                               value={alocacao[campo] as string}
@@ -349,10 +411,15 @@ function ManageRooms({lista, onUpdateLista}: ManageRoomsProps) {
                             >
                               <option value="">—</option>
                               {monitoresDisponiveis.map((m: any) => {
-                                const mNome = m.apelido || m; // fallback se for a string mockada
-                                const isDisable = monitoresDisponiveis === EMPTY;
+                                const mNome = m.apelido || m;
+                                const isDisable =
+                                  monitoresDisponiveis === EMPTY;
                                 return (
-                                  <option key={mNome} value={mNome} disabled={isDisable}>
+                                  <option
+                                    key={mNome}
+                                    value={mNome}
+                                    disabled={isDisable}
+                                  >
                                     {mNome}
                                   </option>
                                 );
@@ -365,7 +432,6 @@ function ManageRooms({lista, onUpdateLista}: ManageRoomsProps) {
                   );
                 })}
 
-                {/* Linha de Sala */}
                 <tr key={`${horario.id}-sala`}>
                   {TURMAS_BASE.map((_, ti) => {
                     const key = `${horario.id}-${ti}`;
@@ -378,7 +444,9 @@ function ManageRooms({lista, onUpdateLista}: ManageRoomsProps) {
                     return (
                       <td
                         key={ti}
-                        className={`border-r-[3px] last:border-r-0 ${hi !== HORARIOS.length - 1 ? "border-b-[3px]" : ""} border-black px-2 py-2`}
+                        className={`border-r-[3px] last:border-r-0 ${
+                          hi !== HORARIOS.length - 1 ? "border-b-[3px]" : ""
+                        } border-black px-2 py-2`}
                       >
                         <select
                           value={alocacao.salaId ?? ""}
@@ -391,11 +459,12 @@ function ManageRooms({lista, onUpdateLista}: ManageRoomsProps) {
                             )
                           }
                           className={`w-full border-[2px] px-2 py-1.5 text-xs font-extrabold uppercase focus:outline-none appearance-none cursor-pointer
-                            ${temConflito
-                              ? "border-red-500 bg-red-500 text-white"
-                              : salaSelecionada
-                              ? `border-black ${salaSelecionada.color} text-white`
-                              : "border-black bg-gray-100 text-gray-500"
+                            ${
+                              temConflito
+                                ? "border-red-500 bg-red-500 text-white"
+                                : salaSelecionada
+                                ? `border-black ${salaSelecionada.color} text-white`
+                                : "border-black bg-gray-100 text-gray-500"
                             }`}
                         >
                           <option value="">Sala...</option>
@@ -414,7 +483,7 @@ function ManageRooms({lista, onUpdateLista}: ManageRoomsProps) {
                     );
                   })}
                 </tr>
-              </>
+              </React.Fragment>
             ))}
           </tbody>
         </table>
