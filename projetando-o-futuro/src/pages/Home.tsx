@@ -112,7 +112,7 @@ function Home() {
             <h2 className="text-6xl md:text-8xl font-extrabold uppercase tracking-tighter text-green-primary w-full md:w-1/2 leading-none">
               Nossa <br className="hidden md:block" /> Missão
             </h2>
-            <p className="text-2xl md:text-3xl text-black leading-snug w-full md:w-1/2 font-medium">
+            <p className="text-2xl md:text-3xl text-black leading-snug w-full md:w-1/2 font-light">
               Orientar crianças e adolescentes fomentando a educação e a cultura
               por meio de disciplinas que trabalhem a ética, a solidariedade, a
               fraternidade, a autoestima e a inteligência emocional, de modo a
@@ -125,7 +125,7 @@ function Home() {
             <h2 className="text-6xl md:text-8xl font-extrabold uppercase tracking-tighter text-green-primary w-full md:w-1/2 leading-none md:text-right">
               Nossa <br className="hidden md:block" /> Visão
             </h2>
-            <p className="text-2xl md:text-3xl text-black leading-snug w-full md:w-1/2 font-medium">
+            <p className="text-2xl md:text-3xl text-black leading-snug w-full md:w-1/2 font-light">
               Criar um futuro melhor para toda a nossa sociedade através das
               contribuições que nossos egressos puderem fazer.
             </p>
@@ -149,7 +149,7 @@ function Home() {
                 <h3 className="text-4xl md:text-5xl font-extrabold uppercase tracking-tighter">
                   Preparação Jovem
                 </h3>
-                <p className="text-xl md:text-2xl font-medium leading-snug">
+                <p className="text-xl md:text-2xl font-light leading-snug">
                   Oferecemos reforço escolar e oficinas profissionalizantes para jovens em situação de vulnerabilidade, preparando-os para o mercado de trabalho e para os desafios do dia a dia.
                 </p>
               </div>
@@ -169,7 +169,7 @@ function Home() {
                 <h3 className="text-4xl md:text-5xl font-extrabold uppercase tracking-tighter md:text-right">
                   Cidadania para todos
                 </h3>
-                <p className="text-xl md:text-2xl font-medium leading-snug md:text-right">
+                <p className="text-xl md:text-2xl font-light leading-snug md:text-right">
                   Trabalhamos valores como ética, solidariedade e inteligência emocional, formando cidadãos conscientes e comprometidos com a transformação da nossa sociedade.
                 </p>
               </div>
@@ -189,7 +189,7 @@ function Home() {
                 <h3 className="text-4xl md:text-5xl font-extrabold uppercase tracking-tighter">
                   Mobilização Social
                 </h3>
-                <p className="text-xl md:text-2xl font-medium leading-snug">
+                <p className="text-xl md:text-2xl font-light leading-snug">
                   Contamos com o apoio de instituições parceiras, empresas e voluntários que acreditam no poder da educação para mudar destinos e construir um futuro melhor.
                 </p>
               </div>
@@ -225,7 +225,7 @@ function Home() {
             <h2 className="text-6xl md:text-8xl font-extrabold uppercase tracking-tighter leading-none w-full md:w-1/2">
               Como <br /> Ajudar
             </h2>
-            <p className="text-xl md:text-2xl font-medium leading-snug w-full md:w-1/2 md:pr-12">
+            <p className="text-xl md:text-2xl font-light leading-snug w-full md:w-1/2 md:pr-12">
               Venha fazer parte desta equipe, sendo parceiro, ministrando aulas,
               servindo alimentos, ajudando na manutenção, e claro,
               compartilhando o nosso sonho.
