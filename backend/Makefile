@@ -1,6 +1,6 @@
 DOCKER_COMPOSE = docker compose
 
-.PHONY: db-up db-down db-restart db-logs db-ps run clean
+.PHONY: db-up db-down db-restart db-logs db-ps db-cli run clean
 
 # Subir o banco de dados em background
 db-up:
@@ -21,6 +21,9 @@ db-logs:
 # Ver o status dos containers ativos
 db-ps:
 	docker ps
+
+db-cli:
+	docker exec -it ong_postgres_db psql -U admin -d projetando_futuro
 
 # Iniciar o servidor Go
 run:
