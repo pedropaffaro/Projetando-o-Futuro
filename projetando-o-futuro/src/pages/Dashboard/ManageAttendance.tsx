@@ -376,7 +376,6 @@ function ManageAttendance({ lista, onUpdateLista }: ManageAttendanceProps) {
     (a) => a.turma === turmaSelecionada.nome
   );
 
-  // === Carregar chamadas já salvas ajustado conforme o Log do Console ===
   useEffect(() => {
     const carregarChamadaDoDia = async () => {
       try {
@@ -391,11 +390,9 @@ function ManageAttendance({ lista, onUpdateLista }: ManageAttendanceProps) {
         if (response.ok) {
           const respostaApi = await response.json();
 
-          // Como vimos no log, o array real de registros está dentro de respostaApi.chamadas
           const listaDeChamadas =
             respostaApi.chamadas || respostaApi.Chamadas || [];
 
-          // Gera a data de hoje local (2026-06-24)
           const hojeLocal = new Date();
           const ano = hojeLocal.getFullYear();
           const mes = String(hojeLocal.getMonth() + 1).padStart(2, "0");
@@ -405,21 +402,14 @@ function ManageAttendance({ lista, onUpdateLista }: ManageAttendanceProps) {
           const presencaCarregada: Presenca = {};
           let encontrouRegistros = false;
 
-          // Varre os objetos de dentro do array do log
           listaDeChamadas.forEach((ch: any) => {
-            // Buscando a data e a turma (tentando tanto letras minúsculas quanto maiúsculas)
             const chData = ch.data || ch.Data || "";
             const chTurma = ch.turma || ch.Turma || "";
 
-            // Verifica se a data do registro contém o dia de hoje
-            // Como no objeto principal a turma veio vazia, vamos verificar se ela bate
-            // ou no nível do registro individual, ou se aceitamos o registro caso a turma venha do aluno
             if (chData.includes(dataHojeStr)) {
-              // Se o Go retornou no formato plano (um aluno por item no array)
               const alunoIdPlano = ch.alunoId ?? ch.aluno_id ?? ch.AlunoID;
               const statusPlano = ch.status ?? ch.Status;
 
-              // Se o item individual tiver turma, validamos. Se não tiver, validamos pelo aluno da lista do front
               const alunoPertenceATurma = lista.some(
                 (a) =>
                   a.ID === alunoIdPlano && a.turma === turmaSelecionada.nome
@@ -433,7 +423,6 @@ function ManageAttendance({ lista, onUpdateLista }: ManageAttendanceProps) {
                 encontrouRegistros = true;
               }
 
-              // Se o Go retornou no formato aninhado (sub-array de registros dentro de cada item)
               const registrosAninhados = ch.registros || ch.Registros;
               if (Array.isArray(registrosAninhados)) {
                 registrosAninhados.forEach((reg: any) => {

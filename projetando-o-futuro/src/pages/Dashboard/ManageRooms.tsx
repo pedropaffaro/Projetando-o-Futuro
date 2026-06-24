@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"; // Importado React para usar o React.Fragment
+import React, { useEffect, useState } from "react";
 
 const SALAS = [
   { id: 1, nome: "Sala Janela", color: "bg-purple-primary" },
@@ -78,7 +78,6 @@ function ManageRooms({ lista, onUpdateLista }: ManageRoomsProps) {
     const carregarGradeSalva = async () => {
       try {
         const token = localStorage.getItem("token");
-        // Adicionamos o Header de Autenticação por segurança
         const response = await fetch("http://localhost:8080/admin/alocacoes", {
           headers: token ? { Authorization: `Bearer ${token}` } : {},
         });
@@ -89,7 +88,6 @@ function ManageRooms({ lista, onUpdateLista }: ManageRoomsProps) {
             const gradeDoBanco = criarGradeInicial();
 
             data.alocacoes.forEach((aloc: any) => {
-              // Correção principal: garante que vai ler "turma" ou "Turma"
               const turmaNome = aloc.turma ?? aloc.Turma ?? "";
               const turmaIndex = TURMAS_BASE.indexOf(turmaNome);
 
@@ -110,7 +108,6 @@ function ManageRooms({ lista, onUpdateLista }: ManageRoomsProps) {
                   salaId: salaId === 0 ? null : salaId,
                 };
               } else {
-                // Se cair aqui, a string da turma que veio do banco não bateu com o TURMAS_BASE
                 console.warn("Turma não identificada na base:", aloc);
               }
             });
