@@ -229,6 +229,7 @@ function Dashboard() {
               projects={projects} 
               sponsors={sponsors} 
               volunteers={volunteers}
+              students={students}
             />
           )}
           {activeTab === "volunteers" && <ManageVolunteers />}
